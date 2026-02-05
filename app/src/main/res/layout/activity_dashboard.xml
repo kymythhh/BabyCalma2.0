@@ -1,0 +1,924 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFFCF5"
+    tools:context=".MainActivity">
+
+
+    <!--  FIXED HEADER  -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:layout_margin="12dp"
+        app:cardCornerRadius="18dp"
+        app:cardElevation="6dp"
+        app:cardBackgroundColor="#F2F2F2">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="12dp">
+
+
+            <!-- Avatar -->
+            <TextView
+                android:id="@+id/FirstLetter"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:gravity="center"
+                android:text="L"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/avatar"/>
+
+
+            <!-- Name + Greeting -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="12dp"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:id="@+id/ProfileUsername"
+                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:text="Lei"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="#000000"/>
+
+                <!-- alam mo dapat dalawa to para isang welcome back tapos isang welcome
+                welcome back tapos new user lang ano kaya yon, ikaw na bahala kyle -->
+                <TextView
+                    android:id="@+id/greeting"
+                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:text="Welcome back! 👋"
+                    android:textSize="13sp"
+                    android:textColor="#777777"/>
+            </LinearLayout>
+
+
+            <!-- Logout -->
+            <Button
+                android:id="@+id/btnLogout"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:text="Logout"
+                android:textSize="13sp"
+                android:textColor="#9B1C1C"
+                android:backgroundTint="#F6C1C1"/>
+
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Gradient Card -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="4dp">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+
+                    <!-- Date -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="4dp">
+
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="10dp">
+
+
+                            <TextView
+                                android:id="@+id/day"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:id="@+id/datetoday"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                        </LinearLayout>
+
+
+                    </androidx.cardview.widget.CardView>
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/greetingText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="GOOD EVENING,"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:id="@+id/greetingUn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" LEI"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" Time to unwind and reflect"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" You earned this moment"
+                        android:textStyle="bold"/>
+
+
+                    <!-- Message Card -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="6dp">
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="16dp"
+                            android:orientation="vertical">
+
+
+                            <TextView
+                                android:text="💪 Every small step brings you closer to your goals"
+                                android:textSize="15sp"
+                                android:textColor="#555555"
+                                android:layout_marginTop="8dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+
+
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+
+                    <!-- Wellness Score Card -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="6dp">
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="24dp"
+                            android:orientation="vertical"
+                            android:gravity="center">
+
+
+                            <TextView
+                                android:text="✨"
+                                android:textSize="32sp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+
+
+                            <TextView
+                                android:text="0%"
+                                android:textSize="36sp"
+                                android:textStyle="bold"
+                                android:textColor="#444444"
+                                android:layout_marginTop="8dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+
+
+                            <TextView
+                                android:text="Wellness Score"
+                                android:textSize="14sp"
+                                android:textColor="#777777"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+
+
+                            <TextView
+                                android:text="Start strong!"
+                                android:textSize="13sp"
+                                android:textColor="#AAAAAA"
+                                android:layout_marginTop="4dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+
+
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- DAILY TIP  (add na lng ng code to connect sa database)-->
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="4dp">
+
+
+                <LinearLayout
+                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:padding="16dp"
+                    android:orientation="vertical">
+
+
+                    <TextView
+                        android:layout_height="match_parent"
+                        android:layout_width="wrap_content"
+                        android:text="Daily Wellness Tip"
+                        android:textStyle="bold"
+                        android:textSize="16sp"/>
+
+
+                    <TextView
+                        android:id="@+id/dailytip"
+                        android:layout_height="match_parent"
+                        android:layout_width="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Remember to hydrate regularly throughout the day. Aim for 8 glasses of water 💧"/>
+
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
+            <!-- TODAY'S PROGRESS -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="#FFF7B2">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Today's Progress"
+                        android:textStyle="bold"
+                        android:textSize="18sp" />
+
+
+                    <!-- ROW 1 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="12dp">
+
+
+                        <!-- WATER -->
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_margin="8dp"
+                            app:cardCornerRadius="16dp">
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:padding="12dp">
+
+
+                                <TextView
+                                    android:layout_height="match_parent"
+                                    android:layout_width="wrap_content"
+                                    android:text="Water"
+                                    android:textStyle="bold"/>
+
+
+                                <TextView
+                                    android:layout_height="match_parent"
+                                    android:layout_width="wrap_content"
+                                    android:text="0/8"
+                                    android:textSize="18sp"/>
+                            </LinearLayout>
+                        </androidx.cardview.widget.CardView>
+
+
+                        <!-- FOCUS -->
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_margin="8dp"
+                            app:cardCornerRadius="16dp">
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:padding="12dp">
+
+
+                                <TextView
+                                    android:layout_height="match_parent"
+                                    android:layout_width="wrap_content"
+                                    android:text="Focus"
+                                    android:textStyle="bold"/>
+
+
+                                <TextView
+                                    android:layout_height="match_parent"
+                                    android:layout_width="wrap_content"
+                                    android:text="0m"
+                                    android:textSize="18sp"/>
+                            </LinearLayout>
+                        </androidx.cardview.widget.CardView>
+                    </LinearLayout>
+
+
+                    <!-- ROW 2 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+
+                        <!-- BREATHS -->
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_margin="8dp"
+                            app:cardCornerRadius="16dp">
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:padding="12dp">
+
+
+                                <TextView
+                                    android:layout_height="match_parent"
+                                    android:layout_width="wrap_content"
+                                    android:text="Breaths"
+                                    android:textStyle="bold"/>
+
+
+                                <TextView
+                                    android:layout_height="match_parent"
+                                    android:layout_width="wrap_content"
+                                    android:text="0"
+                                    android:textSize="18sp"/>
+                            </LinearLayout>
+                        </androidx.cardview.widget.CardView>
+
+
+                        <!-- WELLNESS beat energy gap -->
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_margin="8dp"
+                            app:cardCornerRadius="16dp">
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:padding="12dp">
+
+
+                                <TextView
+                                    android:layout_height="match_parent"
+                                    android:layout_width="wrap_content"
+                                    android:text="Wellness"
+                                    android:textStyle="bold"/>
+
+
+                                <TextView
+                                    android:layout_height="match_parent"
+                                    android:layout_width="wrap_content"
+                                    android:text="0%"
+                                    android:textSize="18sp"/>
+                            </LinearLayout>
+                        </androidx.cardview.widget.CardView>
+                    </LinearLayout>
+
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- DAILY AFFIRMATION -->
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="20dp"
+                    app:cardBackgroundColor="#FFADAD">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="37dp"
+                                android:layout_height="34dp"
+                                android:src="@drawable/circle_button_bg" />
+
+
+                            <TextView
+                                android:id="@+id/DailyAffirmationTitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Daily Affirmation"
+                                android:layout_marginLeft="5dp"
+                                android:textColor="#FFFFFF"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="#FFFFFF"
+                            android:text="Ako'y tahimik lang sa umpisa"/>
+
+                        <!-- code for database -->
+
+                    </LinearLayout>
+
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- WATER INTAKE -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="4dp"
+                    app:cardBackgroundColor="#EAF7FF">
+
+                    <!-- pababa -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <!-- pagilid para may pic -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="37dp"
+                                android:layout_height="34dp"
+                                android:src="@drawable/circle_button_bg" />
+
+                            <TextView
+                                android:id="@+id/WaterTitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Water Intake"
+                                android:textStyle="bold"
+                                android:layout_marginLeft="5dp"
+                                android:textColor="#4a90a3"
+                                android:textSize="20sp" />
+
+                        </LinearLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp">
+
+                            <TextView
+                                android:id="@+id/tvWaterCount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:textStyle="bold"
+                                android:textColor="#4a90a3"
+                                android:textSize="30sp" />
+
+                            <ImageButton
+                                android:id="@+id/btnAddWater"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:layout_alignParentEnd="true"
+                                android:background="@drawable/circle_button_bg"
+                                android:contentDescription="buttondapat"
+                                />
+                        </RelativeLayout>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="glasses today • Goal: 8"
+                            android:textColor="#4a90a3"
+                            />
+
+                        <LinearLayout
+                            android:id="@+id/waterProgressLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="12dp">
+
+                            <View android:id="@+id/bar1" style="@style/WaterBar"/>
+                            <View android:id="@+id/bar2" style="@style/WaterBar"/>
+                            <View android:id="@+id/bar3" style="@style/WaterBar"/>
+                            <View android:id="@+id/bar4" style="@style/WaterBar"/>
+                            <View android:id="@+id/bar5" style="@style/WaterBar"/>
+                            <View android:id="@+id/bar6" style="@style/WaterBar"/>
+                            <View android:id="@+id/bar7" style="@style/WaterBar"/>
+                            <View android:id="@+id/bar8" style="@style/WaterBar"/>
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- BREATHING BUTTON -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="20dp"
+                    app:cardBackgroundColor="#ffd6a5">
+
+                    <!-- pababa -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <!-- pagilid para may pic -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="37dp"
+                                android:layout_height="34dp"
+                                android:src="@drawable/circle_button_bg" />
+
+                            <TextView
+                                android:id="@+id/BreathingTitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Breathing"
+                                android:textStyle="bold"
+                                android:layout_marginLeft="5dp"
+                                android:textColor="#d28800"
+                                android:textSize="20sp" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/Kalma"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Calm your mind"
+                            android:textColor="#d28800"
+                            android:layout_marginTop="5dp"
+                            android:textSize="14sp" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/tvBreathingCount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0 cycles"
+                                android:textColor="#d28800"
+                                android:textStyle="bold"
+                                android:textSize="25sp" />
+
+                            <ImageButton
+                                android:id="@+id/btnAddBreathing"
+                                android:onClick="brthe"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:layout_alignParentEnd="true"
+                                android:background="@drawable/circle_button_bg"
+                                android:contentDescription="buttondapat" />
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- FOCUS -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="20dp"
+                    app:cardBackgroundColor="#dedaf4">
+
+                    <!-- pababa -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <!-- pagilid para may pic -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="37dp"
+                                android:layout_height="34dp"
+                                android:src="@drawable/circle_button_bg" />
+
+                            <TextView
+                                android:id="@+id/FocusTitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Re-Focus"
+                                android:textStyle="bold"
+                                android:layout_marginLeft="5dp"
+                                android:textColor="#8d7cb9"
+                                android:textSize="20sp" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/Pokus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Stay Productive"
+                            android:textColor="#8d7cb9"
+                            android:layout_marginTop="5dp"
+                            android:textSize="14sp" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/tvFocusCount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0m today"
+                                android:textColor="#8d7cb9"
+                                android:textStyle="bold"
+                                android:textSize="25sp" />
+
+                            <ImageButton
+                                android:id="@+id/btnAddFocus"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:layout_alignParentEnd="true"
+                                android:background="@drawable/circle_button_bg"
+                                android:contentDescription="buttondapat" />
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- FOCUS -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/stressReleaseCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="4dp"
+                    app:cardBackgroundColor="#34495E">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="20dp">
+
+                        <!-- Header Row with Icon and Title -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
+
+                            <!-- Sun/Stress Icon -->
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                app:cardCornerRadius="30dp"
+                                app:cardBackgroundColor="#F39C12"
+                                app:cardElevation="0dp">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:text="☀️"
+                                    android:textSize="32sp"
+                                    android:gravity="center"/>
+                            </androidx.cardview.widget.CardView>
+
+                            <!-- Title -->
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginStart="16dp"
+                                android:text="Stress Release"
+                                android:textSize="22sp"
+                                android:textStyle="bold"
+                                android:textColor="#F39C12"/>
+
+                            <!-- NEW Badge -->
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:cardCornerRadius="12dp"
+                                app:cardBackgroundColor="#E74C3C"
+                                app:cardElevation="0dp">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="NEW"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold"
+                                    android:textColor="@android:color/white"
+                                    android:paddingStart="12dp"
+                                    android:paddingEnd="12dp"
+                                    android:paddingTop="4dp"
+                                    android:paddingBottom="4dp"/>
+                            </androidx.cardview.widget.CardView>
+                        </LinearLayout>
+
+                        <!-- Content Row -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="20dp"
+                            android:gravity="center_vertical">
+
+                            <!-- Left Side - Text -->
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Release your stress"
+                                    android:textSize="16sp"
+                                    android:textColor="#BDC3C7"
+                                    android:layout_marginBottom="8dp"/>
+
+                                <TextView
+                                    android:id="@+id/releasedCountText"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="0 released"
+                                    android:textSize="32sp"
+                                    android:textStyle="bold"
+                                    android:textColor="#F39C12"/>
+                            </LinearLayout>
+
+                            <!-- Right Side - Sticky Note -->
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="120dp"
+                                android:layout_height="120dp"
+                                app:cardCornerRadius="8dp"
+                                app:cardBackgroundColor="#F39C12"
+                                app:cardElevation="4dp">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical"
+                                    android:gravity="center">
+
+                                    <!-- Pin Icon -->
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:textSize="24sp"
+                                        android:layout_gravity="end"
+                                        android:layout_marginEnd="8dp"
+                                        android:layout_marginTop="4dp"/>
+
+                                    <!-- Lantern Icon -->
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="-8dp"
+                                        android:text="🏮"
+                                        android:textSize="48sp" />
+                                </LinearLayout>
+                            </androidx.cardview.widget.CardView>
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
