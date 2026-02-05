@@ -15,6 +15,9 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import com.bautista.myapplication.database.BabyCalmaRepository;
+import com.bautista.myapplication.database.DailyResetManager;
+
 import java.util.Locale;
 
 public class Dashboard extends AppCompatActivity {
@@ -31,11 +34,21 @@ public class Dashboard extends AppCompatActivity {
     private CardView stressReleaseCard;
     ImageButton btnAddBreathing, btnAddFocus;
 
-//wakim
+    // Database components
+    private BabyCalmaRepository repository;
+    private DailyResetManager resetManager;
+    private String currentDate;
+
+    //wakim
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+
+        // Initialize database
+        repository = new BabyCalmaRepository(this);
+        resetManager = new DailyResetManager(this);
+        currentDate = DailyResetManager.getCurrentDate();
 
         timeHandler.post(updateTimeRunnable);
         tvDay = findViewById(R.id.day);
@@ -70,7 +83,8 @@ public class Dashboard extends AppCompatActivity {
                 findViewById(R.id.bar8)
         };
 
-        updateUI();
+        // Check for daily reset and load data
+        checkDailyResetAndLoadData();
 
         btnAddWater.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +92,20 @@ public class Dashboard extends AppCompatActivity {
                 if (waterCount < MAX_WATER) {
                     waterCount++;
                     updateUI();
+
+                    // Save to database
+                    repository.saveWaterIntake(waterCount, currentDate,
+                            new BabyCalmaRepository.DatabaseCallback() {
+                                @Override
+                                public void onSuccess() {
+                                    // Successfully saved
+                                }
+
+                                @Override
+                                public void onError(Exception e) {
+                                    e.printStackTrace();
+                                }
+                            });
                 }
             }
         });
@@ -128,10 +156,24 @@ public class Dashboard extends AppCompatActivity {
             result -> {
                 if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                     int sessionCycles = result.getData().getIntExtra("total_cycles", 0);
+                    int durationSeconds = result.getData().getIntExtra("duration_seconds", 0);
 
                     totalbrth += sessionCycles;
-
                     tvBreathingCnt.setText(totalbrth + " cycles");
+
+                    // Save to database
+                    repository.saveBreathingSession(sessionCycles, durationSeconds, currentDate,
+                            new BabyCalmaRepository.DatabaseCallback() {
+                                @Override
+                                public void onSuccess() {
+                                    // Successfully saved
+                                }
+
+                                @Override
+                                public void onError(Exception e) {
+                                    e.printStackTrace();
+                                }
+                            });
                 }
             }
     );
@@ -163,10 +205,78 @@ public class Dashboard extends AppCompatActivity {
             timeHandler.postDelayed(this, 1000);
         }
     };
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Reload data when returning from other activities
+        loadTodayData();
+    }
+
+    /**
+     * Check for daily reset and load today's data
+     */
+    private void checkDailyResetAndLoadData() {
+        resetManager.checkAndResetIfNeeded(new DailyResetManager.ResetCallback() {
+            @Override
+            public void onResetComplete(boolean wasReset) {
+                if (wasReset) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(Dashboard.this,
+                                    "Welcome to a new day! 🌅",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+                loadTodayData();
+            }
+        });
+    }
+
+    /**
+     * Load all today's data from database
+     */
+    private void loadTodayData() {
+        // Load water intake
+        repository.getWaterIntakeForToday(currentDate,
+                new BabyCalmaRepository.DataCallback<Integer>() {
+                    @Override
+                    public void onDataLoaded(Integer count) {
+                        waterCount = (count != null && count > 0) ? count : 0;
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                updateUI();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+
+        // Load breathing cycles
+        repository.getTotalBreathingCyclesForToday(currentDate,
+                new BabyCalmaRepository.DataCallback<Integer>() {
+                    @Override
+                    public void onDataLoaded(Integer total) {
+                        totalbrth = (total != null && total > 0) ? total : 0;
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                tvBreathingCnt.setText(totalbrth + " cycles");
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+    }
 }
-
-
-
-
-
-
