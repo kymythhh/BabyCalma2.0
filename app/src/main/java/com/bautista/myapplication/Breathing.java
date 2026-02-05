@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,6 +26,7 @@ public class Breathing extends AppCompatActivity {
 
         final ImageView zoomImageView = findViewById(R.id.bexer);
         final Button startBtn = findViewById(R.id.start);
+        final ImageButton backBtn = findViewById(R.id.btnBack);
 
         animatorSet = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.start);
         animatorSet.setTarget(zoomImageView);
@@ -76,19 +78,39 @@ public class Breathing extends AppCompatActivity {
                     animatorSet.start();
                 } else {
                     isRunning = false;
-                    startBtn.setText("Start");
+                    startBtn.setText("Start Breathing");
                     animatorSet.cancel();
 
-                    Intent countBrthe = new Intent();
-                    countBrthe.putExtra("total_cycles", count);
-                    setResult(RESULT_OK, countBrthe);
-
-                    finish();
-
-                    zoomImageView.setScaleX(1.0f);
-                    zoomImageView.setScaleY(1.0f);
+                    // Reset the image scale and position when stopped
+                    zoomImageView.animate().scaleX(1.0f).scaleY(1.0f).setDuration(300).start();
                 }
             }
         });
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Stop the animation if it's running before going back
+                if (isRunning) {
+                    isRunning = false;
+                    animatorSet.cancel();
+                }
+
+                Intent countBrthe = new Intent();
+                countBrthe.putExtra("total_cycles", count);
+                setResult(RESULT_OK, countBrthe);
+
+                finish(); // Goes back to the previous activity (Dashboard)
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        // Handle the system back button press as well
+        Intent countBrthe = new Intent();
+        countBrthe.putExtra("total_cycles", count);
+        setResult(RESULT_OK, countBrthe);
+        super.onBackPressed();
     }
 }
