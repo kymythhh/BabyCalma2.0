@@ -16,6 +16,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +31,7 @@ public class Lantern extends AppCompatActivity {
     private EditText stressorInput;
     private Button addButton;
     private Button releaseAllButton;
+    private ImageButton backButton;
     private FrameLayout lanternContainer;
     private TextView totalCountText;
     private TextView activeCountText;
@@ -41,13 +43,13 @@ public class Lantern extends AppCompatActivity {
     private int totalCreated = 0;
     private int totalReleased = 0;
     private static final int MAX_LANTERNS = 15;
-    private static final int LANTERN_SIZE = 140;
+    private static final int LANTERN_SIZE = 140; // dp - fixed size for all lanterns
     private Random random = new Random();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_lantern);
+        setContentView(R.layout.activity_main);
 
         initializeViews();
         setupListeners();
@@ -58,16 +60,25 @@ public class Lantern extends AppCompatActivity {
         stressorInput = findViewById(R.id.stressorInput);
         addButton = findViewById(R.id.addButton);
         releaseAllButton = findViewById(R.id.releaseAllButton);
+        backButton = findViewById(R.id.backButton);
         lanternContainer = findViewById(R.id.lanternContainer);
         totalCountText = findViewById(R.id.totalCount);
         activeCountText = findViewById(R.id.activeCount);
         releasedCountText = findViewById(R.id.releasedCount);
         emptyStateView = findViewById(R.id.emptyState);
-
+        
         vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
     }
 
     private void setupListeners() {
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // This will close the activity and return to the previous screen (dashboard)
+                finish();
+            }
+        });
+
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,8 +96,8 @@ public class Lantern extends AppCompatActivity {
         stressorInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE ||
-                        (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+                if (actionId == EditorInfo.IME_ACTION_DONE || 
+                    (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
                     addLantern();
                     return true;
                 }
@@ -104,8 +115,8 @@ public class Lantern extends AppCompatActivity {
         }
 
         if (lanterns.size() >= MAX_LANTERNS) {
-            Toast.makeText(this, "Maximum " + MAX_LANTERNS + " lanterns reached. Release some first!",
-                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Maximum " + MAX_LANTERNS + " lanterns reached. Release some first!", 
+                          Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -119,11 +130,11 @@ public class Lantern extends AppCompatActivity {
 
         // Get random position
         int[] position = getRandomPosition();
-
+        
         // Set layout params with random position
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.WRAP_CONTENT,
-                FrameLayout.LayoutParams.WRAP_CONTENT
+            FrameLayout.LayoutParams.WRAP_CONTENT,
+            FrameLayout.LayoutParams.WRAP_CONTENT
         );
         params.leftMargin = position[0];
         params.topMargin = position[1];
@@ -153,17 +164,17 @@ public class Lantern extends AppCompatActivity {
         lanternView.setScaleX(0.5f);
         lanternView.setScaleY(0.5f);
         lanternView.animate()
-                .alpha(1f)
-                .scaleX(1f)
-                .scaleY(1f)
-                .setDuration(300)
-                .withEndAction(new Runnable() {
-                    @Override
-                    public void run() {
-                        startFloatingAnimation(lanternView);
-                    }
-                })
-                .start();
+            .alpha(1f)
+            .scaleX(1f)
+            .scaleY(1f)
+            .setDuration(300)
+            .withEndAction(new Runnable() {
+                @Override
+                public void run() {
+                    startFloatingAnimation(lanternView);
+                }
+            })
+            .start();
 
         updateStats();
     }
@@ -172,69 +183,76 @@ public class Lantern extends AppCompatActivity {
         // Get container dimensions
         int containerWidth = lanternContainer.getWidth();
         int containerHeight = lanternContainer.getHeight();
-
+        
         // If dimensions not available yet, use defaults
         if (containerWidth == 0) containerWidth = 800;
         if (containerHeight == 0) containerHeight = 1200;
-
-        // Calculate safe bounds (keep lanterns visible)
-        int padding = 20;
-        int maxX = containerWidth - LANTERN_SIZE - padding;
-        int maxY = containerHeight - LANTERN_SIZE - padding;
-
+        
+        // Calculate safe bounds with extra padding to prevent cropping
+        // We need padding for: lantern size + floating animation range
+        int edgePadding = 100; // Extra padding to account for floating animations (40-80dp movement)
+        int minX = edgePadding;
+        int minY = edgePadding;
+        int maxX = containerWidth - LANTERN_SIZE - edgePadding;
+        int maxY = containerHeight - LANTERN_SIZE - edgePadding;
+        
+        // Make sure we have valid bounds
+        if (maxX <= minX) maxX = minX + 50;
+        if (maxY <= minY) maxY = minY + 50;
+        
         // Try to find a non-overlapping position
         int maxAttempts = 50;
         for (int attempt = 0; attempt < maxAttempts; attempt++) {
-            // Generate random position
-            int x = padding + random.nextInt(Math.max(1, maxX - padding));
-            int y = padding + random.nextInt(Math.max(1, maxY - padding));
-
+            // Generate random position within safe bounds
+            int x = minX + random.nextInt(Math.max(1, maxX - minX));
+            int y = minY + random.nextInt(Math.max(1, maxY - minY));
+            
             // Check if this position overlaps with existing lanterns
             boolean overlaps = false;
             for (View existingLantern : lanterns) {
                 FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) existingLantern.getLayoutParams();
                 int existingX = params.leftMargin;
                 int existingY = params.topMargin;
-
+                
                 // Calculate distance between centers
                 int centerX1 = x + LANTERN_SIZE / 2;
                 int centerY1 = y + LANTERN_SIZE / 2;
                 int centerX2 = existingX + LANTERN_SIZE / 2;
                 int centerY2 = existingY + LANTERN_SIZE / 2;
-
+                
                 double distance = Math.sqrt(Math.pow(centerX2 - centerX1, 2) + Math.pow(centerY2 - centerY1, 2));
-
+                
                 // Minimum distance should be at least the lantern size to prevent overlap
-                // Adding 20dp buffer for the floating animation
+                // Adding 40dp buffer for the floating animation
                 if (distance < LANTERN_SIZE + 40) {
                     overlaps = true;
                     break;
                 }
             }
-
+            
             if (!overlaps) {
                 return new int[]{x, y};
             }
         }
-
+        
         // If we couldn't find a non-overlapping position after max attempts,
-        // return a random position anyway (better than failing)
-        int x = padding + random.nextInt(Math.max(1, maxX - padding));
-        int y = padding + random.nextInt(Math.max(1, maxY - padding));
+        // return a position within safe bounds anyway
+        int x = minX + random.nextInt(Math.max(1, maxX - minX));
+        int y = minY + random.nextInt(Math.max(1, maxY - minY));
         return new int[]{x, y};
     }
 
     private void startFloatingAnimation(final View lanternView) {
-        // Random floating parameters for each lantern
-        float horizontalRange = 40 + random.nextInt(40); // 40-80dp horizontal movement
-        float verticalRange = 30 + random.nextInt(30);   // 30-60dp vertical movement
+        // Reduced floating parameters to keep lanterns fully visible
+        float horizontalRange = 30 + random.nextInt(20); // 30-50dp horizontal movement
+        float verticalRange = 25 + random.nextInt(20);   // 25-45dp vertical movement
         long durationX = 3000 + random.nextInt(2000);    // 3-5 seconds for horizontal
         long durationY = 2500 + random.nextInt(2000);    // 2.5-4.5 seconds for vertical
-
+        
         // Random starting direction
         float startX = random.nextBoolean() ? -horizontalRange : horizontalRange;
         float startY = random.nextBoolean() ? -verticalRange : verticalRange;
-
+        
         // Horizontal floating animation
         final ValueAnimator floatX = ValueAnimator.ofFloat(startX, -startX);
         floatX.setDuration(durationX);
@@ -250,7 +268,7 @@ public class Lantern extends AppCompatActivity {
                 lanternView.setTranslationX((Float) animation.getAnimatedValue());
             }
         });
-
+        
         // Vertical floating animation
         final ValueAnimator floatY = ValueAnimator.ofFloat(startY, -startY);
         floatY.setDuration(durationY);
@@ -266,7 +284,7 @@ public class Lantern extends AppCompatActivity {
                 lanternView.setTranslationY((Float) animation.getAnimatedValue());
             }
         });
-
+        
         // Gentle rotation animation
         final ValueAnimator rotation = ValueAnimator.ofFloat(-5f, 5f);
         rotation.setDuration(4000 + random.nextInt(2000)); // 4-6 seconds
@@ -282,12 +300,12 @@ public class Lantern extends AppCompatActivity {
                 lanternView.setRotation((Float) animation.getAnimatedValue());
             }
         });
-
+        
         // Start all animations
         floatX.start();
         floatY.start();
         rotation.start();
-
+        
         // Store animators in tag for cleanup
         lanternView.setTag(R.id.lanternText, new ValueAnimator[]{floatX, floatY, rotation});
     }
@@ -349,15 +367,15 @@ public class Lantern extends AppCompatActivity {
         vibrateMedium();
 
         int lanternCount = lanterns.size();
-
+        
         // Create a copy of the list to avoid concurrent modification
         List<View> lanternsToRelease = new ArrayList<>(lanterns);
-
+        
         // Release each lantern with a slight delay for cascade effect
         for (int i = 0; i < lanternsToRelease.size(); i++) {
             final View lanternView = lanternsToRelease.get(i);
             final int delay = i * 100; // 100ms delay between each
-
+            
             lanternView.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -367,7 +385,7 @@ public class Lantern extends AppCompatActivity {
                 }
             }, delay);
         }
-
+        
         Toast.makeText(this, "✨ Releasing " + lanternCount + " lanterns!", Toast.LENGTH_SHORT).show();
     }
 
