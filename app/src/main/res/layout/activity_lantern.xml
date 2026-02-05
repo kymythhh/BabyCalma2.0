@@ -12,21 +12,39 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:gravity="center"
         android:paddingTop="20dp"
         android:paddingBottom="20dp">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <!-- Back Button Row -->
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="🏮 Lantern Release"
-            android:textSize="28sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/white"
-            android:shadowColor="#80000000"
-            android:shadowDx="0"
-            android:shadowDy="2"
-            android:shadowRadius="10"/>
+            android:layout_marginBottom="10dp">
+
+            <ImageButton
+                android:id="@+id/backButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/button_background"
+                android:src="@android:drawable/ic_menu_revert"
+                android:tint="@android:color/white"
+                android:contentDescription="Back to dashboard"
+                android:padding="8dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="🏮 Lantern Release"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
+                android:shadowColor="#80000000"
+                android:shadowDx="0"
+                android:shadowDy="2"
+                android:shadowRadius="10"/>
+        </RelativeLayout>
 
         <TextView
             android:layout_width="wrap_content"
@@ -35,6 +53,7 @@
             android:textSize="14sp"
             android:textColor="#FFD89B"
             android:alpha="0.9"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="8dp"/>
     </LinearLayout>
 
@@ -72,7 +91,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:text="✨ Add Lantern"
+                android:text="Add Lantern"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="@android:color/white"
@@ -84,7 +103,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="🎆 Release All Stressors"
+                android:text="Release All Stressors"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="@android:color/white"
@@ -129,7 +148,9 @@
             android:id="@+id/lanternContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="16dp">
+            android:padding="8dp"
+            android:clipChildren="false"
+            android:clipToPadding="false">
 
             <!-- Empty State -->
             <LinearLayout
