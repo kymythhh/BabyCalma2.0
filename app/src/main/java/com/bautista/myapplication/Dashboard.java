@@ -31,7 +31,7 @@ public class Dashboard extends AppCompatActivity {
     private CardView stressReleaseCard;
     ImageButton btnAddBreathing, btnAddFocus;
 
-
+//wakim
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
