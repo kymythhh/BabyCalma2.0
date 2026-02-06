@@ -39,15 +39,15 @@ public class Register extends AppCompatActivity {
                 return;
             }
 
-            SharedPreferences prefs = getSharedPreferences("CalmaUsers", MODE_PRIVATE);
-            SharedPreferences.Editor editor = prefs.edit();
-
-            editor.putString("username", username);
-            editor.putString("password", password);
-            editor.apply();
+            SharedPreferences prefs = getSharedPreferences("CalmaUser", MODE_PRIVATE);
+            prefs.edit()
+                    .putString("username", username)
+                    .putString("password", password)
+                    .putBoolean("isNewUser", true)
+                    .apply();
 
             Toast.makeText(this, "Account created successfully!", Toast.LENGTH_SHORT).show();
-            finish(); // back to login
+            finish();
         });
     }
 }

@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">My Application</string>
+
+    <!-- Dashboard Greetings -->
+    <string name="welcome">Welcome! 👋</string>
+    <string name="welcome_back">Welcome back! 👋</string>
+
+    <!-- Dashboard Formats -->
+    <string name="glasses_today">%d glasses today</string>
+    <string name="water_summary">%1$d/%2$d</string>
+    <string name="percent_format">%d%%</string>
+    <string name="cycles_format">%d cycles</string>
+    <string name="minutes_today">%dm today</string>
+    <string name="minutes_format">%dm</string>
+    <string name="released_format">%d released</string>
 </resources>
