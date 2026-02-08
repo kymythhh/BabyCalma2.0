@@ -124,6 +124,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="16dp"
+                            app:cardBackgroundColor="#00ffffff"
                             app:cardCornerRadius="20dp"
                             app:cardElevation="4dp">
 
@@ -161,6 +162,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="GOOD EVENING,"
+                                android:textColor="#ffffff"
+                                android:textSize="25dp"
                                 android:textStyle="bold" />
 
                             <TextView
@@ -168,6 +171,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text=" USER"
+                                android:textSize="25dp"
+                                android:textColor="#ffffff"
                                 android:textStyle="bold" />
                         </LinearLayout>
 
@@ -176,12 +181,15 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text=" Time to unwind and reflect"
+                            android:textColor="#ffffff"
+                            android:textSize="20dp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text=" You earned this moment"
+                            android:text=" ✨ You earned this moment"
+                            android:textColor="#ffffff"
                             android:textStyle="bold" />
 
 
@@ -190,8 +198,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="20dp"
+                            app:cardBackgroundColor="#00ffffff"
                             app:cardCornerRadius="20dp"
-                            app:cardElevation="6dp">
+                            app:cardElevation="2dp">
 
 
                             <LinearLayout
@@ -206,7 +215,8 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="8dp"
                                     android:text="💪 Every small step brings you closer to your goals"
-                                    android:textColor="#555555"
+                                    android:textColor="#ffffff"
+                                    android:textStyle="bold"
                                     android:textSize="15sp" />
 
 
@@ -219,8 +229,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="24dp"
+                            app:cardBackgroundColor="#00ffffff"
                             app:cardCornerRadius="20dp"
-                            app:cardElevation="6dp">
+                            app:cardElevation="2dp">
 
 
                             <LinearLayout
@@ -244,7 +255,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="8dp"
                                     android:text="0%"
-                                    android:textColor="#444444"
+                                    android:textColor="#ffffff"
                                     android:textSize="36sp"
                                     android:textStyle="bold" />
 
@@ -253,7 +264,8 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="Wellness Score"
-                                    android:textColor="#777777"
+                                    android:textColor="#ffffff"
+                                    android:textStyle="bold"
                                     android:textSize="14sp" />
 
 
@@ -262,7 +274,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="4dp"
                                     android:text="Start strong!"
-                                    android:textColor="#AAAAAA"
+                                    android:textColor="#ffffff"
                                     android:textSize="13sp" />
 
 
