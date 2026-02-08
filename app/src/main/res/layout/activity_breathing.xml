@@ -33,7 +33,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginStart="0dp"
-            android:src="@drawable/breathicon" />
+            android:src="@drawable/amihan" />
 
         <LinearLayout
             android:layout_width="wrap_content"
