@@ -160,14 +160,14 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="GOOD EVENING,"
-                                android:textStyle="bold"/>
+                                android:textStyle="bold" />
 
                             <TextView
                                 android:id="@+id/greetingUn"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text=" USER"
-                                android:textStyle="bold"/>
+                                android:textStyle="bold" />
                         </LinearLayout>
 
 
@@ -175,12 +175,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text=" Time to unwind and reflect"
-                            android:textStyle="bold"/>
+                            android:textStyle="bold" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text=" You earned this moment"
-                            android:textStyle="bold"/>
+                            android:textStyle="bold" />
 
 
                         <!-- Message Card -->
@@ -195,17 +196,17 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:padding="16dp"
-                                android:orientation="vertical">
+                                android:orientation="vertical"
+                                android:padding="16dp">
 
 
                                 <TextView
-                                    android:text="💪 Every small step brings you closer to your goals"
-                                    android:textSize="15sp"
-                                    android:textColor="#555555"
-                                    android:layout_marginTop="8dp"
                                     android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"/>
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:text="💪 Every small step brings you closer to your goals"
+                                    android:textColor="#555555"
+                                    android:textSize="15sp" />
 
 
                             </LinearLayout>
@@ -224,44 +225,44 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:padding="24dp"
+                                android:gravity="center"
                                 android:orientation="vertical"
-                                android:gravity="center">
+                                android:padding="24dp">
 
 
                                 <TextView
-                                    android:text="✨"
-                                    android:textSize="32sp"
                                     android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"/>
+                                    android:layout_height="wrap_content"
+                                    android:text="✨"
+                                    android:textSize="32sp" />
 
 
                                 <TextView
                                     android:id="@+id/tvWellnessScore"
-                                    android:text="0%"
-                                    android:textSize="36sp"
-                                    android:textStyle="bold"
-                                    android:textColor="#444444"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
                                     android:layout_marginTop="8dp"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"/>
+                                    android:text="0%"
+                                    android:textColor="#444444"
+                                    android:textSize="36sp"
+                                    android:textStyle="bold" />
 
 
                                 <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
                                     android:text="Wellness Score"
-                                    android:textSize="14sp"
                                     android:textColor="#777777"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"/>
+                                    android:textSize="14sp" />
 
 
                                 <TextView
-                                    android:text="Start strong!"
-                                    android:textSize="13sp"
-                                    android:textColor="#AAAAAA"
-                                    android:layout_marginTop="4dp"
                                     android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"/>
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:text="Start strong!"
+                                    android:textColor="#AAAAAA"
+                                    android:textSize="13sp" />
 
 
                             </LinearLayout>
@@ -512,7 +513,7 @@
                                 <ImageView
                                     android:layout_width="37dp"
                                     android:layout_height="34dp"
-                                    android:src="@drawable/circle_button_bg" />
+                                    android:src="@drawable/posoh" />
 
 
                                 <TextView
