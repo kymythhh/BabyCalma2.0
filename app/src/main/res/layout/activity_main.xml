@@ -11,7 +11,8 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+
+        android:layout_height="570dp"
         android:layout_margin="16dp"
         app:cardCornerRadius="12dp"
         app:cardElevation="6dp">
@@ -22,13 +23,20 @@
             android:orientation="vertical"
             android:padding="16dp">
 
+            <ImageView
+                android:layout_width="186dp"
+                android:layout_height="182dp"
+                android:layout_gravity="center"
+                android:layout_marginbottom="15dp"
+                android:src="@drawable/ForReal"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Welcome to Calma"
                 android:textSize="30sp"
                 android:textStyle="bold"
-                android:textColor="#8a7bb4"
+                android:textColor="#bfdcff"
                 android:layout_gravity="center"/>
 
             <TextView
@@ -43,11 +51,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:text="Username"
+                android:textSize="15dp"
+                android:layout_marginBottom="5dp"
                 android:textStyle="bold"/>
 
             <EditText
                 android:id="@+id/username"
                 android:hint="Enter username"
+                android:background="@drawable/registerbox"
+                android:textStyle="italic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
@@ -55,7 +67,9 @@
                 android:id="@+id/password"
                 android:hint="Password"
                 android:inputType="textPassword"
+                android:background="@drawable/registerbox"
                 android:layout_marginTop="8dp"
+                android:textStyle="italic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
@@ -64,15 +78,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Don't have an account? Sign up"
-                android:textColor="#6A5ACD"
+                android:textColor="#2695ed"
                 android:layout_marginTop="16dp"
                 android:layout_gravity="center"/>
 
             <Button
                 android:id="@+id/continuebtn"
+                android:backgroundTint="#bfdcff"
+                android:layout_gravity="center"
                 android:text="CONTINUE"
+                android:textColor="#fdfbd6"
+                android:textSize="16dp"
+                android:fontFamily="arial"
+                android:textStyle="italic|bold"
+                android:textAllCaps="false"
                 android:layout_marginTop="40dp"
-                android:layout_width="match_parent"
+                android:layout_width="250dp"
                 android:layout_height="40dp"/>
 
         </LinearLayout>

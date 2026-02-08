@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,6 +14,7 @@
 
         <TextView
             android:text="Create Account"
+            android:textColor="#bfdcff"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="24sp"
@@ -22,6 +24,7 @@
         <EditText
             android:id="@+id/etUsername"
             android:hint="Username"
+            android:background="@drawable/registerbox"
             android:layout_marginTop="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
@@ -29,6 +32,7 @@
         <EditText
             android:id="@+id/etPassword"
             android:hint="Password"
+            android:background="@drawable/registerbox"
             android:inputType="textPassword"
             android:layout_marginTop="8dp"
             android:layout_width="match_parent"
@@ -36,10 +40,25 @@
 
         <TextView
             android:text="Terms and Conditions"
+            android:layout_marginBottom="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:layout_marginTop="16dp"/>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+           app:cardBackgroundColor="#fdfbd6"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="4dp">
+
+    <LinearLayout
+        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:padding="16dp"
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
@@ -70,6 +89,8 @@ Use of the app is at your own discretion. \n
 7. Consent
 By clicking Sign Up, you agree to these terms."
             android:textSize="12sp"
+            android:fontFamily="arial"
+            android:textStyle="bold"
             android:layout_marginTop="8dp"/>
 
         <CheckBox
@@ -79,11 +100,19 @@ By clicking Sign Up, you agree to these terms."
             android:text="I agree to the Terms and Conditions"
             android:layout_marginTop="12dp"/>
 
+    </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
         <Button
             android:id="@+id/btnSignUp"
             android:text="Sign Up"
+            android:fontFamily="arial"
+            android:textStyle="bold"
             android:layout_marginTop="16dp"
-            android:layout_width="match_parent"
+            android:backgroundTint="#bfdcff"
+            android:textColor="#fdfbd6"
+            android:layout_width="150dp"
+            android:layout_gravity="center"
             android:layout_height="wrap_content"/>
 
     </LinearLayout>
