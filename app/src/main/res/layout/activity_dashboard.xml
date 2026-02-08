@@ -566,7 +566,7 @@
                                 <ImageView
                                     android:layout_width="37dp"
                                     android:layout_height="34dp"
-                                    android:src="@drawable/circle_button_bg" />
+                                    android:src="@drawable/watuh" />
 
                                 <TextView
                                     android:id="@+id/WaterTitle"
@@ -657,7 +657,7 @@
                                 <ImageView
                                     android:layout_width="37dp"
                                     android:layout_height="34dp"
-                                    android:src="@drawable/circle_button_bg" />
+                                    android:src="@drawable/amihan" />
 
                                 <TextView
                                     android:id="@+id/BreathingTitle"
@@ -696,10 +696,10 @@
                                 <ImageButton
                                     android:id="@+id/btnAddBreathing"
                                     android:onClick="brthe"
-                                    android:layout_width="48dp"
-                                    android:layout_height="48dp"
+                                    android:layout_width="50dp"
+                                    android:layout_height="52dp"
                                     android:layout_alignParentEnd="true"
-                                    android:background="@drawable/circle_button_bg"
+                                    android:background="@drawable/amihan"
                                     android:contentDescription="buttondapat" />
                             </RelativeLayout>
 
@@ -732,7 +732,7 @@
                                 <ImageView
                                     android:layout_width="37dp"
                                     android:layout_height="34dp"
-                                    android:src="@drawable/circle_button_bg" />
+                                    android:src="@drawable/orasan" />
 
                                 <TextView
                                     android:id="@+id/FocusTitle"
@@ -770,10 +770,10 @@
 
                                 <ImageButton
                                     android:id="@+id/btnAddFocus"
-                                    android:layout_width="48dp"
-                                    android:layout_height="48dp"
+                                    android:layout_width="50dp"
+                                    android:layout_height="52dp"
                                     android:layout_alignParentEnd="true"
-                                    android:background="@drawable/circle_button_bg"
+                                    android:background="@drawable/orasan"
                                     android:contentDescription="buttondapat" />
                             </RelativeLayout>
 
