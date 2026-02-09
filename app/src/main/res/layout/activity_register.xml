@@ -23,11 +23,11 @@
 
         <EditText
             android:id="@+id/etUsername"
-            android:hint="Username"
-            android:background="@drawable/registerbox"
-            android:layout_marginTop="16dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/registerbox"
+            android:hint="Username" />
 
         <EditText
             android:id="@+id/etPassword"
@@ -51,12 +51,13 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
            app:cardBackgroundColor="#fdfbd6"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="4dp">
+            app:cardCornerRadius="5dp"
+            app:cardElevation="2dp">
 
     <LinearLayout
         android:layout_height="match_parent"
         android:layout_width="wrap_content"
+        android:background="@drawable/termsncondi"
         android:padding="16dp"
         android:orientation="vertical">
 
