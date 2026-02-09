@@ -2,6 +2,7 @@ package com.bautista.myapplication;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -20,34 +21,46 @@ public class Register extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        etUsername = findViewById(R.id.etUsername);
-        etPassword = findViewById(R.id.etPassword);
-        cbAgree = findViewById(R.id.cbAgree);
-        btnSignUp = findViewById(R.id.btnSignUp);
+        try {
+            etUsername = findViewById(R.id.etUsername);
+            etPassword = findViewById(R.id.etPassword);
+            cbAgree = findViewById(R.id.cbAgree);
+            btnSignUp = findViewById(R.id.btnSignUp);
 
-        btnSignUp.setOnClickListener(v -> {
-            String username = etUsername.getText().toString();
-            String password = etPassword.getText().toString();
+            btnSignUp.setOnClickListener(v -> {
+                try {
+                    String username = etUsername.getText().toString().trim();
+                    String password = etPassword.getText().toString().trim();
 
-            if (username.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
-                return;
-            }
+                    if (username.isEmpty() || password.isEmpty()) {
+                        Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
 
-            if (!cbAgree.isChecked()) {
-                Toast.makeText(this, "You must agree to the Terms and Conditions", Toast.LENGTH_SHORT).show();
-                return;
-            }
+                    if (!cbAgree.isChecked()) {
+                        Toast.makeText(this, "You must agree to the Terms and Conditions", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
 
-            SharedPreferences prefs = getSharedPreferences("CalmaUser", MODE_PRIVATE);
-            prefs.edit()
-                    .putString("username", username)
-                    .putString("password", password)
-                    .putBoolean("isNewUser", true)
-                    .apply();
+                    SharedPreferences prefs = getSharedPreferences("CalmaUser", MODE_PRIVATE);
+                    boolean success = prefs.edit()
+                            .putString("username", username)
+                            .putString("password", password)
+                            .putBoolean("isNewUser", true)
+                            .commit(); // Use commit for immediate confirmation
 
-            Toast.makeText(this, "Account created successfully!", Toast.LENGTH_SHORT).show();
-            finish();
-        });
+                    if (success) {
+                        Toast.makeText(this, "Account created successfully!", Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else {
+                        Toast.makeText(this, "Error saving data. Please try again.", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (Exception e) {
+                    Log.e("Register", "Error during sign up: " + e.getMessage());
+                }
+            });
+        } catch (Exception e) {
+            Log.e("Register", "Error in onCreate: " + e.getMessage());
+        }
     }
 }
