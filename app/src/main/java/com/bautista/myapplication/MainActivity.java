@@ -3,6 +3,7 @@ package com.bautista.myapplication;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -21,38 +22,47 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        username = findViewById(R.id.username);
-        password = findViewById(R.id.password);
-        continuebtn = findViewById(R.id.continuebtn);
-        tvSignUp = findViewById(R.id.tvSignUp);
+        try {
+            username = findViewById(R.id.username);
+            password = findViewById(R.id.password);
+            continuebtn = findViewById(R.id.continuebtn);
+            tvSignUp = findViewById(R.id.tvSignUp);
 
-        SharedPreferences userPrefs = getSharedPreferences("CalmaUser", MODE_PRIVATE);
+            SharedPreferences userPrefs = getSharedPreferences("CalmaUser", MODE_PRIVATE);
 
-        continuebtn.setOnClickListener(v -> {
-            String inputUser = username.getText().toString();
-            String inputPass = password.getText().toString();
+            continuebtn.setOnClickListener(v -> {
+                try {
+                    String inputUser = username.getText().toString().trim();
+                    String inputPass = password.getText().toString().trim();
 
-            String savedUser = userPrefs.getString("username", null);
-            String savedPass = userPrefs.getString("password", null);
+                    if (inputUser.isEmpty() || inputPass.isEmpty()) {
+                        Toast.makeText(this, "Please enter both credentials", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
 
-            if (inputUser.equals(savedUser) && inputPass.equals(savedPass)) {
-                // Check if this is a new user (first time logging in)
-                boolean isNew = userPrefs.getBoolean("isNewUser", true);
+                    String savedUser = userPrefs.getString("username", null);
+                    String savedPass = userPrefs.getString("password", null);
 
-                Intent intent = new Intent(MainActivity.this, Dashboard.class);
-                intent.putExtra("username", inputUser);
-                intent.putExtra("isNewUser", isNew);
-                startActivity(intent);
+                    if (inputUser.equals(savedUser) && inputPass.equals(savedPass)) {
+                        boolean isNew = userPrefs.getBoolean("isNewUser", true);
 
-                // Note: We don't set isNewUser to false here anymore.
-                // Dashboard will handle that after showing the welcome greeting.
-            } else {
-                Toast.makeText(this, "Invalid credentials", Toast.LENGTH_SHORT).show();
-            }
-        });
+                        Intent intent = new Intent(MainActivity.this, Dashboard.class);
+                        intent.putExtra("username", inputUser);
+                        intent.putExtra("isNewUser", isNew);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(this, "Invalid credentials", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (Exception e) {
+                    Log.e("MainActivity", "Error during login click: " + e.getMessage());
+                }
+            });
 
-        tvSignUp.setOnClickListener(v ->
-                startActivity(new Intent(MainActivity.this, Register.class))
-        );
+            tvSignUp.setOnClickListener(v ->
+                    startActivity(new Intent(MainActivity.this, Register.class))
+            );
+        } catch (Exception e) {
+            Log.e("MainActivity", "Error in onCreate: " + e.getMessage());
+        }
     }
 }
