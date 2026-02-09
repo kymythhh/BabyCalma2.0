@@ -6,11 +6,12 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -24,93 +25,74 @@ public class Breathing extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_breathing);
 
-        final ImageView zoomImageView = findViewById(R.id.bexer);
-        final Button startBtn = findViewById(R.id.start);
-        final ImageButton backBtn = findViewById(R.id.btnBack);
+        try {
+            final ImageView zoomImageView = findViewById(R.id.bexer);
+            final Button startBtn = findViewById(R.id.start);
+            final ImageButton backBtn = findViewById(R.id.btnBack);
 
-        animatorSet = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.start);
-        animatorSet.setTarget(zoomImageView);
+            animatorSet = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.start);
+            if (animatorSet != null) {
+                animatorSet.setTarget(zoomImageView);
 
-        for (Animator anim : animatorSet.getChildAnimations()) {
-            anim.addListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationStart(Animator animation) {
-                    if (!isRunning) return;
+                for (Animator anim : animatorSet.getChildAnimations()) {
+                    anim.addListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+                            if (!isRunning) return;
+                            try {
+                                switch (phaseCount) {
+                                    case 0: zoomImageView.setImageResource(R.drawable.inhale); break;
+                                    case 1: zoomImageView.setImageResource(R.drawable.hold); break;
+                                    case 2: zoomImageView.setImageResource(R.drawable.exhale); count++; break;
+                                }
+                                phaseCount = (phaseCount + 1) % 3;
+                            } catch (Exception e) { Log.e("Breathing", "Anim frame error: " + e.getMessage()); }
+                        }
+                    });
+                }
 
-                    switch (phaseCount) {
-                        case 0:
-                            zoomImageView.setImageResource(R.drawable.inhale);
-                            break;
-                        case 1:
-                            zoomImageView.setImageResource(R.drawable.hold);
-                            break;
-                        case 2:
-                            zoomImageView.setImageResource(R.drawable.exhale);
-                            count++;
-                            break;
+                animatorSet.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) { if (isRunning) animatorSet.start(); }
+                });
+            }
+
+            startBtn.setOnClickListener(v -> {
+                try {
+                    if (!isRunning) {
+                        isRunning = true;
+                        phaseCount = 0;
+                        startBtn.setText("Stop");
+                        zoomImageView.setPivotX(zoomImageView.getWidth() / 2f);
+                        zoomImageView.setPivotY(zoomImageView.getHeight() / 2f);
+                        if (animatorSet != null) animatorSet.start();
+                    } else {
+                        isRunning = false;
+                        startBtn.setText("Start Breathing");
+                        if (animatorSet != null) animatorSet.cancel();
+                        zoomImageView.animate().scaleX(1.0f).scaleY(1.0f).setDuration(300).start();
                     }
-                    phaseCount = (phaseCount + 1) % 3;
-                }
+                } catch (Exception e) { Log.e("Breathing", "Start button error: " + e.getMessage()); }
             });
+
+            backBtn.setOnClickListener(v -> goBackWithData());
+
+        } catch (Exception e) {
+            Log.e("Breathing", "Init error: " + e.getMessage());
+            Toast.makeText(this, "Animation error", Toast.LENGTH_SHORT).show();
         }
+    }
 
-        animatorSet.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                if (isRunning) {
-                    animatorSet.start();
-                }
-            }
-        });
-
-        startBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!isRunning) {
-                    isRunning = true;
-                    phaseCount = 0;
-                    startBtn.setText("Stop");
-
-                    zoomImageView.setPivotX(zoomImageView.getWidth() / 2f);
-                    zoomImageView.setPivotY(zoomImageView.getHeight() / 2f);
-
-                    animatorSet.start();
-                } else {
-                    isRunning = false;
-                    startBtn.setText("Start Breathing");
-                    animatorSet.cancel();
-
-                    // Reset the image scale and position when stopped
-                    zoomImageView.animate().scaleX(1.0f).scaleY(1.0f).setDuration(300).start();
-                }
-            }
-        });
-
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Stop the animation if it's running before going back
-                if (isRunning) {
-                    isRunning = false;
-                    animatorSet.cancel();
-                }
-
-                Intent countBrthe = new Intent();
-                countBrthe.putExtra("total_cycles", count);
-                setResult(RESULT_OK, countBrthe);
-
-                finish(); // Goes back to the previous activity (Dashboard)
-            }
-        });
+    private void goBackWithData() {
+        try {
+            if (isRunning && animatorSet != null) animatorSet.cancel();
+            Intent countBrthe = new Intent();
+            countBrthe.putExtra("total_cycles", count);
+            setResult(RESULT_OK, countBrthe);
+            finish();
+        } catch (Exception e) { Log.e("Breathing", "Back navigation error: " + e.getMessage()); finish(); }
     }
 
     @Override
-    public void onBackPressed() {
-        // Handle the system back button press as well
-        Intent countBrthe = new Intent();
-        countBrthe.putExtra("total_cycles", count);
-        setResult(RESULT_OK, countBrthe);
-        super.onBackPressed();
-    }
+    public void onBackPressed() { goBackWithData(); }
 }
