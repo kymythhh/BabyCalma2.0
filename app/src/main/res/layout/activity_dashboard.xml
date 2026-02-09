@@ -125,13 +125,13 @@
                             android:layout_marginBottom="16dp"
                             app:cardBackgroundColor="#00ffffff"
                             app:cardCornerRadius="20dp"
-                            app:cardElevation="2dp">
+                            app:cardElevation="1dp">
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical"
-                                android:padding="10dp">
+                                android:padding="15dp">
 
                                 <TextView
                                     android:id="@+id/day"
@@ -191,14 +191,14 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="20dp"
                             app:cardBackgroundColor="#00ffffff"
-                            app:cardCornerRadius="20dp"
-                            app:cardElevation="2dp">
+                            app:cardCornerRadius="15dp"
+                            app:cardElevation="1dp">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical"
-                                android:padding="16dp">
+                                android:padding="20dp">
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -217,8 +217,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="24dp"
                             app:cardBackgroundColor="#00ffffff"
-                            app:cardCornerRadius="20dp"
-                            app:cardElevation="2dp">
+                            app:cardCornerRadius="15dp"
+                            app:cardElevation="1dp">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
