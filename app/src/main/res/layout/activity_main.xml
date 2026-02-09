@@ -27,8 +27,8 @@
                 android:layout_width="186dp"
                 android:layout_height="182dp"
                 android:layout_gravity="center"
-                android:layout_marginbottom="15dp"
-                android:src="@drawable/ForReal"/>
+                android:layout_marginBottom="15dp"
+                android:src="@drawable/forreal"/>
 
             <TextView
                 android:layout_width="wrap_content"
