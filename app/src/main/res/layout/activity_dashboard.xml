@@ -119,33 +119,39 @@
                         android:orientation="vertical"
                         android:padding="16dp">
 
-                        <androidx.cardview.widget.CardView
+                        <com.google.android.material.card.MaterialCardView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="16dp"
-                            app:cardBackgroundColor="#00ffffff"
+                            app:cardBackgroundColor="#20FFFFFF"
+                            app:strokeColor="#50FFFFFF"
+                            app:strokeWidth="1dp"
                             app:cardCornerRadius="20dp"
-                            app:cardElevation="2dp">
+                            app:cardElevation="0dp">
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical"
-                                android:padding="10dp">
+                                android:paddingHorizontal="16dp"
+                                android:paddingVertical="10dp">
 
                                 <TextView
                                     android:id="@+id/day"
                                     android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content" />
+                                    android:layout_height="wrap_content"
+                                    android:textColor="#ffffff"
+                                    android:textStyle="bold"/>
 
                                 <TextView
                                     android:id="@+id/datetoday"
                                     android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content" />
+                                    android:layout_height="wrap_content"
+                                    android:textColor="#ffffff"/>
 
                             </LinearLayout>
 
-                        </androidx.cardview.widget.CardView>
+                        </com.google.android.material.card.MaterialCardView>
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -186,13 +192,15 @@
                             android:textColor="#ffffff"
                             android:textStyle="bold" />
 
-                        <androidx.cardview.widget.CardView
+                        <com.google.android.material.card.MaterialCardView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="20dp"
-                            app:cardBackgroundColor="#00ffffff"
+                            app:cardBackgroundColor="#20FFFFFF"
+                            app:strokeColor="#40FFFFFF"
+                            app:strokeWidth="1dp"
                             app:cardCornerRadius="20dp"
-                            app:cardElevation="2dp">
+                            app:cardElevation="0dp">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -210,15 +218,17 @@
                                     android:textSize="15sp" />
 
                             </LinearLayout>
-                        </androidx.cardview.widget.CardView>
+                        </com.google.android.material.card.MaterialCardView>
 
-                        <androidx.cardview.widget.CardView
+                        <com.google.android.material.card.MaterialCardView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="24dp"
-                            app:cardBackgroundColor="#00ffffff"
+                            app:cardBackgroundColor="#20FFFFFF"
+                            app:strokeColor="#40FFFFFF"
+                            app:strokeWidth="1dp"
                             app:cardCornerRadius="20dp"
-                            app:cardElevation="2dp">
+                            app:cardElevation="0dp">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -260,44 +270,7 @@
                                     android:textSize="13sp" />
 
                             </LinearLayout>
-                        </androidx.cardview.widget.CardView>
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-                <!-- DAILY TIP  (add na lng ng code to connect sa database)-->
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    app:cardCornerRadius="20dp"
-                    app:cardElevation="4dp">
-
-
-                    <LinearLayout
-                        android:layout_height="match_parent"
-                        android:layout_width="wrap_content"
-                        android:padding="16dp"
-                        android:orientation="vertical">
-
-
-                        <TextView
-                            android:layout_height="match_parent"
-                            android:layout_width="wrap_content"
-                            android:textColor="#a5e1a6"
-                            android:text="ִ ✨ Daily Wellness Tip"
-                            android:textStyle="bold"
-                            android:textSize="16sp"/>
-
-
-                        <TextView
-                            android:id="@+id/dailytip"
-                            android:layout_height="match_parent"
-                            android:layout_width="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="Remember to hydrate regularly throughout the day. Aim for 8 glasses of water 💧"/>
-
-
+                        </com.google.android.material.card.MaterialCardView>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
