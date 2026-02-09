@@ -7,8 +7,9 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Register extends AppCompatActivity {
 
@@ -32,6 +33,7 @@ public class Register extends AppCompatActivity {
                     String username = etUsername.getText().toString().trim();
                     String password = etPassword.getText().toString().trim();
 
+                    // Basic Validation
                     if (username.isEmpty() || password.isEmpty()) {
                         Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
                         return;
@@ -43,24 +45,45 @@ public class Register extends AppCompatActivity {
                     }
 
                     SharedPreferences prefs = getSharedPreferences("CalmaUser", MODE_PRIVATE);
-                    boolean success = prefs.edit()
-                            .putString("username", username)
-                            .putString("password", password)
-                            .putBoolean("isNewUser", true)
-                            .commit(); // Use commit for immediate confirmation
 
-                    if (success) {
+                    // --- ERROR HANDLING: DUPLICATE CHECK ---
+                    // Retrieve existing usernames. SharedPreferences returns a copy of the set.
+                    Set<String> registeredUsers = prefs.getStringSet("all_usernames", new HashSet<>());
+
+                    if (registeredUsers.contains(username)) {
+                        Toast.makeText(this, "Username '" + username + "' already exists. Try another.", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+
+                    // --- SAVE DATA LOCALLY ---
+                    SharedPreferences.Editor editor = prefs.edit();
+
+                    // Save specific password for THIS username
+                    editor.putString("password_" + username, password);
+
+                    // Add new username to the list of all accounts
+                    Set<String> updatedUsers = new HashSet<>(registeredUsers);
+                    updatedUsers.add(username);
+                    editor.putStringSet("all_usernames", updatedUsers);
+
+                    // Set current session details
+                    editor.putString("username", username);
+                    editor.putBoolean("isNewUser", true);
+
+                    if (editor.commit()) {
                         Toast.makeText(this, "Account created successfully!", Toast.LENGTH_SHORT).show();
                         finish();
                     } else {
-                        Toast.makeText(this, "Error saving data. Please try again.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Storage error. Please try again.", Toast.LENGTH_SHORT).show();
                     }
+
                 } catch (Exception e) {
                     Log.e("Register", "Error during sign up: " + e.getMessage());
+                    Toast.makeText(this, "An unexpected error occurred", Toast.LENGTH_SHORT).show();
                 }
             });
         } catch (Exception e) {
-            Log.e("Register", "Error in onCreate: " + e.getMessage());
+            Log.e("Register", "Initialization error: " + e.getMessage());
         }
     }
 }

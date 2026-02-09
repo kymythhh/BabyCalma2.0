@@ -8,7 +8,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -40,10 +39,14 @@ public class MainActivity extends AppCompatActivity {
                         return;
                     }
 
-                    String savedUser = userPrefs.getString("username", null);
-                    String savedPass = userPrefs.getString("password", null);
+                    // --- SEARCH FOR USER-SPECIFIC DATA ---
+                    // Retrieve the password tied to this specific username
+                    String savedPass = userPrefs.getString("password_" + inputUser, null);
 
-                    if (inputUser.equals(savedUser) && inputPass.equals(savedPass)) {
+                    if (savedPass != null && inputPass.equals(savedPass)) {
+                        // Mark this user as the active session user
+                        userPrefs.edit().putString("username", inputUser).apply();
+
                         boolean isNew = userPrefs.getBoolean("isNewUser", true);
 
                         Intent intent = new Intent(MainActivity.this, Dashboard.class);
@@ -51,10 +54,12 @@ public class MainActivity extends AppCompatActivity {
                         intent.putExtra("isNewUser", isNew);
                         startActivity(intent);
                     } else {
-                        Toast.makeText(this, "Invalid credentials", Toast.LENGTH_SHORT).show();
+                        // Either username doesn't exist (savedPass is null) or password wrong
+                        Toast.makeText(this, "Invalid username or password", Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
-                    Log.e("MainActivity", "Error during login click: " + e.getMessage());
+                    Log.e("MainActivity", "Error during login: " + e.getMessage());
+                    Toast.makeText(this, "Login error. Please try again.", Toast.LENGTH_SHORT).show();
                 }
             });
 
