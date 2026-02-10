@@ -10,6 +10,9 @@ public class LanternEntity {
     @PrimaryKey(autoGenerate = true)
     public int id;
     
+    @ColumnInfo(name = "username")
+    public String username;
+    
     @ColumnInfo(name = "stressor_text")
     public String stressorText;
     
@@ -25,7 +28,8 @@ public class LanternEntity {
     @ColumnInfo(name = "is_released")
     public boolean isReleased;
     
-    public LanternEntity(String stressorText, String createdDate, long createdTimestamp, boolean isReleased) {
+    public LanternEntity(String username, String stressorText, String createdDate, long createdTimestamp, boolean isReleased) {
+        this.username = username;
         this.stressorText = stressorText;
         this.createdDate = createdDate;
         this.createdTimestamp = createdTimestamp;

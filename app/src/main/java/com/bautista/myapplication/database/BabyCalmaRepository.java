@@ -34,18 +34,19 @@ public class BabyCalmaRepository {
 
     // ==================== WATER INTAKE ====================
 
-    public void saveWaterIntake(final int glassCount, final String date, final DatabaseCallback callback) {
+    public void saveWaterIntake(final String username, final int glassCount, final String date, final DatabaseCallback callback) {
         executor.execute(new Runnable() {
             @Override
             public void run() {
                 try {
-                    WaterIntakeEntity existing = database.waterIntakeDao().getByDate(date);
+                    WaterIntakeEntity existing = database.waterIntakeDao().getByDate(username, date);
                     if (existing != null) {
                         existing.glassCount = glassCount;
                         existing.timestamp = System.currentTimeMillis();
                         database.waterIntakeDao().update(existing);
                     } else {
                         WaterIntakeEntity entity = new WaterIntakeEntity(
+                                username,
                                 glassCount,
                                 date,
                                 System.currentTimeMillis()
@@ -60,12 +61,12 @@ public class BabyCalmaRepository {
         });
     }
 
-    public void getWaterIntakeForToday(final String date, final DataCallback<Integer> callback) {
+    public void getWaterIntakeForToday(final String username, final String date, final DataCallback<Integer> callback) {
         executor.execute(new Runnable() {
             @Override
             public void run() {
                 try {
-                    int count = database.waterIntakeDao().getTotalGlassesForDate(date);
+                    int count = database.waterIntakeDao().getTotalGlassesForDate(username, date);
                     if (callback != null) callback.onDataLoaded(count);
                 } catch (Exception e) {
                     if (callback != null) callback.onError(e);
@@ -76,13 +77,14 @@ public class BabyCalmaRepository {
 
     // ==================== BREATHING SESSIONS ====================
 
-    public void saveBreathingSession(final int cycles, final int durationSeconds,
+    public void saveBreathingSession(final String username, final int cycles, final int durationSeconds,
                                      final String date, final DatabaseCallback callback) {
         executor.execute(new Runnable() {
             @Override
             public void run() {
                 try {
                     BreathingSessionEntity entity = new BreathingSessionEntity(
+                            username,
                             cycles,
                             durationSeconds,
                             date,
@@ -97,12 +99,12 @@ public class BabyCalmaRepository {
         });
     }
 
-    public void getTotalBreathingCyclesForToday(final String date, final DataCallback<Integer> callback) {
+    public void getTotalBreathingCyclesForToday(final String username, final String date, final DataCallback<Integer> callback) {
         executor.execute(new Runnable() {
             @Override
             public void run() {
                 try {
-                    int total = database.breathingSessionDao().getTotalCyclesForDate(date);
+                    int total = database.breathingSessionDao().getTotalCyclesForDate(username, date);
                     if (callback != null) callback.onDataLoaded(total);
                 } catch (Exception e) {
                     if (callback != null) callback.onError(e);
@@ -113,13 +115,14 @@ public class BabyCalmaRepository {
 
     // ==================== FOCUS SESSIONS ====================
 
-    public void saveFocusSession(final int durationMinutes, final String date,
+    public void saveFocusSession(final String username, final int durationMinutes, final String date,
                                  final boolean completed, final DatabaseCallback callback) {
         executor.execute(new Runnable() {
             @Override
             public void run() {
                 try {
                     FocusSessionEntity entity = new FocusSessionEntity(
+                            username,
                             durationMinutes,
                             date,
                             System.currentTimeMillis(),
@@ -134,12 +137,12 @@ public class BabyCalmaRepository {
         });
     }
 
-    public void getTotalFocusMinutesForToday(final String date, final DataCallback<Integer> callback) {
+    public void getTotalFocusMinutesForToday(final String username, final String date, final DataCallback<Integer> callback) {
         executor.execute(new Runnable() {
             @Override
             public void run() {
                 try {
-                    int total = database.focusSessionDao().getTotalMinutesForDate(date);
+                    int total = database.focusSessionDao().getTotalMinutesForDate(username, date);
                     if (callback != null) callback.onDataLoaded(total);
                 } catch (Exception e) {
                     if (callback != null) callback.onError(e);
@@ -150,12 +153,13 @@ public class BabyCalmaRepository {
 
     // ==================== LANTERNS ====================
 
-    public void saveLantern(final String stressorText, final String date, final DataCallback<Long> callback) {
+    public void saveLantern(final String username, final String stressorText, final String date, final DataCallback<Long> callback) {
         executor.execute(new Runnable() {
             @Override
             public void run() {
                 try {
                     LanternEntity entity = new LanternEntity(
+                            username,
                             stressorText,
                             date,
                             System.currentTimeMillis(),
@@ -184,12 +188,12 @@ public class BabyCalmaRepository {
         });
     }
 
-    public void getActiveLanterns(final String date, final DataCallback<List<LanternEntity>> callback) {
+    public void getActiveLanterns(final String username, final String date, final DataCallback<List<LanternEntity>> callback) {
         executor.execute(new Runnable() {
             @Override
             public void run() {
                 try {
-                    List<LanternEntity> lanterns = database.lanternDao().getActiveLanternsForDate(date);
+                    List<LanternEntity> lanterns = database.lanternDao().getActiveLanternsForDate(username, date);
                     if (callback != null) callback.onDataLoaded(lanterns);
                 } catch (Exception e) {
                     if (callback != null) callback.onError(e);
@@ -198,14 +202,14 @@ public class BabyCalmaRepository {
         });
     }
 
-    public void getLanternStats(final String date, final DataCallback<LanternStats> callback) {
+    public void getLanternStats(final String username, final String date, final DataCallback<LanternStats> callback) {
         executor.execute(new Runnable() {
             @Override
             public void run() {
                 try {
-                    int total = database.lanternDao().getTotalCountForDate(date);
-                    int active = database.lanternDao().getActiveCountForDate(date);
-                    int released = database.lanternDao().getReleasedCountForDate(date);
+                    int total = database.lanternDao().getTotalCountForDate(username, date);
+                    int active = database.lanternDao().getActiveCountForDate(username, date);
+                    int released = database.lanternDao().getReleasedCountForDate(username, date);
 
                     LanternStats stats = new LanternStats(total, active, released);
                     if (callback != null) callback.onDataLoaded(stats);

@@ -10,6 +10,9 @@ public class BreathingSessionEntity {
     @PrimaryKey(autoGenerate = true)
     public int id;
     
+    @ColumnInfo(name = "username")
+    public String username;
+    
     @ColumnInfo(name = "cycles")
     public int cycles;
     
@@ -22,7 +25,8 @@ public class BreathingSessionEntity {
     @ColumnInfo(name = "timestamp")
     public long timestamp;
     
-    public BreathingSessionEntity(int cycles, int durationSeconds, String date, long timestamp) {
+    public BreathingSessionEntity(String username, int cycles, int durationSeconds, String date, long timestamp) {
+        this.username = username;
         this.cycles = cycles;
         this.durationSeconds = durationSeconds;
         this.date = date;

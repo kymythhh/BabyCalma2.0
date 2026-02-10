@@ -31,7 +31,7 @@ import com.bautista.myapplication.database.entities.WaterIntakeEntity;
                 UserProfileEntity.class,
                 AffirmationEntity.class
         },
-        version = 2,
+        version = 3,
         exportSchema = false
 )
 public abstract class BabyCalmaDatabase extends RoomDatabase {

@@ -22,18 +22,18 @@ public interface WaterIntakeDao {
     @Delete
     void delete(WaterIntakeEntity waterIntake);
     
-    @Query("SELECT * FROM water_intake WHERE date = :date LIMIT 1")
-    WaterIntakeEntity getByDate(String date);
+    @Query("SELECT * FROM water_intake WHERE username = :username AND date = :date LIMIT 1")
+    WaterIntakeEntity getByDate(String username, String date);
     
-    @Query("SELECT SUM(glass_count) FROM water_intake WHERE date = :date")
-    int getTotalGlassesForDate(String date);
+    @Query("SELECT SUM(glass_count) FROM water_intake WHERE username = :username AND date = :date")
+    int getTotalGlassesForDate(String username, String date);
     
-    @Query("DELETE FROM water_intake WHERE date = :date")
-    void deleteByDate(String date);
+    @Query("DELETE FROM water_intake WHERE username = :username AND date = :date")
+    void deleteByDate(String username, String date);
     
-    @Query("DELETE FROM water_intake WHERE date < :date")
-    void deleteOlderThan(String date);
+    @Query("DELETE FROM water_intake WHERE username = :username AND date < :date")
+    void deleteOlderThan(String username, String date);
     
-    @Query("SELECT * FROM water_intake ORDER BY timestamp DESC")
-    List<WaterIntakeEntity> getAllRecords();
+    @Query("SELECT * FROM water_intake WHERE username = :username ORDER BY timestamp DESC")
+    List<WaterIntakeEntity> getAllRecords(String username);
 }

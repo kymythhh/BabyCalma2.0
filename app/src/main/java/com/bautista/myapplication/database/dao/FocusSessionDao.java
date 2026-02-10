@@ -22,21 +22,21 @@ public interface FocusSessionDao {
     @Delete
     void delete(FocusSessionEntity session);
     
-    @Query("SELECT * FROM focus_sessions WHERE date = :date ORDER BY timestamp DESC")
-    List<FocusSessionEntity> getSessionsForDate(String date);
+    @Query("SELECT * FROM focus_sessions WHERE username = :username AND date = :date ORDER BY timestamp DESC")
+    List<FocusSessionEntity> getSessionsForDate(String username, String date);
     
-    @Query("SELECT SUM(duration_minutes) FROM focus_sessions WHERE date = :date AND completed = 1")
-    int getTotalMinutesForDate(String date);
+    @Query("SELECT SUM(duration_minutes) FROM focus_sessions WHERE username = :username AND date = :date AND completed = 1")
+    int getTotalMinutesForDate(String username, String date);
     
-    @Query("SELECT COUNT(*) FROM focus_sessions WHERE date = :date AND completed = 1")
-    int getCompletedSessionsForDate(String date);
+    @Query("SELECT COUNT(*) FROM focus_sessions WHERE username = :username AND date = :date AND completed = 1")
+    int getCompletedSessionsForDate(String username, String date);
     
-    @Query("DELETE FROM focus_sessions WHERE date = :date")
-    void deleteByDate(String date);
+    @Query("DELETE FROM focus_sessions WHERE username = :username AND date = :date")
+    void deleteByDate(String username, String date);
     
-    @Query("DELETE FROM focus_sessions WHERE date < :date")
-    void deleteOlderThan(String date);
+    @Query("DELETE FROM focus_sessions WHERE username = :username AND date < :date")
+    void deleteOlderThan(String username, String date);
     
-    @Query("SELECT * FROM focus_sessions ORDER BY timestamp DESC")
-    List<FocusSessionEntity> getAllSessions();
+    @Query("SELECT * FROM focus_sessions WHERE username = :username ORDER BY timestamp DESC")
+    List<FocusSessionEntity> getAllSessions(String username);
 }

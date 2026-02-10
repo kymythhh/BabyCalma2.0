@@ -22,18 +22,18 @@ public interface DailyStatsDao {
     @Delete
     void delete(DailyStatsEntity stats);
     
-    @Query("SELECT * FROM daily_stats WHERE date = :date LIMIT 1")
-    DailyStatsEntity getStatsForDate(String date);
+    @Query("SELECT * FROM daily_stats WHERE username = :username AND date = :date LIMIT 1")
+    DailyStatsEntity getStatsForDate(String username, String date);
     
-    @Query("SELECT * FROM daily_stats ORDER BY timestamp DESC LIMIT 7")
-    List<DailyStatsEntity> getLastSevenDays();
+    @Query("SELECT * FROM daily_stats WHERE username = :username ORDER BY timestamp DESC LIMIT 7")
+    List<DailyStatsEntity> getLastSevenDays(String username);
     
-    @Query("SELECT AVG(wellness_score) FROM daily_stats WHERE date >= :startDate")
-    int getAverageWellnessScore(String startDate);
+    @Query("SELECT AVG(wellness_score) FROM daily_stats WHERE username = :username AND date >= :startDate")
+    int getAverageWellnessScore(String username, String startDate);
     
-    @Query("DELETE FROM daily_stats WHERE date < :date")
-    void deleteOlderThan(String date);
+    @Query("DELETE FROM daily_stats WHERE username = :username AND date < :date")
+    void deleteOlderThan(String username, String date);
     
-    @Query("SELECT * FROM daily_stats ORDER BY timestamp DESC")
-    List<DailyStatsEntity> getAllStats();
+    @Query("SELECT * FROM daily_stats WHERE username = :username ORDER BY timestamp DESC")
+    List<DailyStatsEntity> getAllStats(String username);
 }

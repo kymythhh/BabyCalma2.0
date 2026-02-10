@@ -46,6 +46,7 @@ public class Dashboard extends AppCompatActivity {
     private BabyCalmaRepository repository;
     private DailyResetManager resetManager;
     private String currentDate;
+    private String loggedInUsername;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,16 +83,16 @@ public class Dashboard extends AppCompatActivity {
             tvDailyAffirmation = findViewById(R.id.tvDailyAffirmation);
 
             Intent intent = getIntent();
-            String loggedInUser = intent.getStringExtra("username");
-            if (headerUsername != null) headerUsername.setText(loggedInUser);
+            loggedInUsername = intent.getStringExtra("username");
+            if (headerUsername != null) headerUsername.setText(loggedInUsername);
 
-            if (loggedInUser != null && !loggedInUser.isEmpty() && tvFirstLetter != null) {
-                tvFirstLetter.setText(String.valueOf(loggedInUser.charAt(0)).toUpperCase());
+            if (loggedInUsername != null && !loggedInUsername.isEmpty() && tvFirstLetter != null) {
+                tvFirstLetter.setText(String.valueOf(loggedInUsername.charAt(0)).toUpperCase());
             }
 
             TextView user = findViewById(R.id.greetingUn);
-            if (loggedInUser != null && user != null) {
-                user.setText(loggedInUser);
+            if (loggedInUsername != null && user != null) {
+                user.setText(loggedInUsername);
             }
 
             SharedPreferences prefs = getSharedPreferences("CalmaUser", MODE_PRIVATE);
@@ -142,7 +143,7 @@ public class Dashboard extends AppCompatActivity {
                 if (waterCount < MAX_WATER) {
                     waterCount++;
                     updateWaterUI();
-                    repository.saveWaterIntake(waterCount, currentDate, null);
+                    repository.saveWaterIntake(loggedInUsername, waterCount, currentDate, null);
                 }
             });
 
@@ -200,7 +201,7 @@ public class Dashboard extends AppCompatActivity {
                         totalbrth += sessionCycles;
                         if (tvBreathingCnt != null) tvBreathingCnt.setText(getString(R.string.cycles_format, totalbrth));
                         if (tvSummaryBreaths != null) tvSummaryBreaths.setText(String.valueOf(totalbrth));
-                        repository.saveBreathingSession(sessionCycles, durationSeconds, currentDate, null);
+                        repository.saveBreathingSession(loggedInUsername, sessionCycles, durationSeconds, currentDate, null);
                         calculateWellnessScore();
                     }
                 } catch (Exception e) {
@@ -239,7 +240,7 @@ public class Dashboard extends AppCompatActivity {
 
     private void checkDailyResetAndLoadData() {
         try {
-            resetManager.checkAndResetIfNeeded(wasReset -> {
+            resetManager.checkAndResetIfNeeded(loggedInUsername, wasReset -> {
                 if (wasReset) {
                     runOnUiThread(() -> Toast.makeText(Dashboard.this, "Welcome to a new day! 🌅", Toast.LENGTH_LONG).show());
                 }
@@ -256,7 +257,7 @@ public class Dashboard extends AppCompatActivity {
     private void loadTodayData() {
         try {
             currentDate = DailyResetManager.getCurrentDate();
-            repository.getWaterIntakeForToday(currentDate, new BabyCalmaRepository.DataCallback<Integer>() {
+            repository.getWaterIntakeForToday(loggedInUsername, currentDate, new BabyCalmaRepository.DataCallback<Integer>() {
                 @Override
                 public void onDataLoaded(Integer data) {
                     waterCount = (data != null) ? data : 0;
@@ -265,7 +266,7 @@ public class Dashboard extends AppCompatActivity {
                 @Override public void onError(Exception e) { Log.e("Dashboard", "Load water error: " + e.getMessage()); }
             });
 
-            repository.getTotalBreathingCyclesForToday(currentDate, new BabyCalmaRepository.DataCallback<Integer>() {
+            repository.getTotalBreathingCyclesForToday(loggedInUsername, currentDate, new BabyCalmaRepository.DataCallback<Integer>() {
                 @Override
                 public void onDataLoaded(Integer data) {
                     totalbrth = (data != null) ? data : 0;
@@ -278,7 +279,7 @@ public class Dashboard extends AppCompatActivity {
                 @Override public void onError(Exception e) { Log.e("Dashboard", "Load breathing error: " + e.getMessage()); }
             });
 
-            repository.getTotalFocusMinutesForToday(currentDate, new BabyCalmaRepository.DataCallback<Integer>() {
+            repository.getTotalFocusMinutesForToday(loggedInUsername, currentDate, new BabyCalmaRepository.DataCallback<Integer>() {
                 @Override
                 public void onDataLoaded(Integer data) {
                     focusMinutes = (data != null) ? data : 0;
@@ -291,7 +292,7 @@ public class Dashboard extends AppCompatActivity {
                 @Override public void onError(Exception e) { Log.e("Dashboard", "Load focus error: " + e.getMessage()); }
             });
 
-            repository.getLanternStats(currentDate, new BabyCalmaRepository.DataCallback<BabyCalmaRepository.LanternStats>() {
+            repository.getLanternStats(loggedInUsername, currentDate, new BabyCalmaRepository.DataCallback<BabyCalmaRepository.LanternStats>() {
                 @Override
                 public void onDataLoaded(BabyCalmaRepository.LanternStats data) {
                     releasedLanterns = (data != null) ? data.released : 0;

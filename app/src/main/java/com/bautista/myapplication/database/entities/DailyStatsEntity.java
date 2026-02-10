@@ -10,6 +10,9 @@ public class DailyStatsEntity {
     @PrimaryKey(autoGenerate = true)
     public int id;
     
+    @ColumnInfo(name = "username")
+    public String username;
+    
     @ColumnInfo(name = "date")
     public String date; // Format: YYYY-MM-DD
     
@@ -31,9 +34,10 @@ public class DailyStatsEntity {
     @ColumnInfo(name = "timestamp")
     public long timestamp;
     
-    public DailyStatsEntity(String date, int wellnessScore, int totalWater, 
+    public DailyStatsEntity(String username, String date, int wellnessScore, int totalWater, 
                            int totalBreathingCycles, int totalFocusMinutes, 
                            int totalLanternsReleased, long timestamp) {
+        this.username = username;
         this.date = date;
         this.wellnessScore = wellnessScore;
         this.totalWater = totalWater;

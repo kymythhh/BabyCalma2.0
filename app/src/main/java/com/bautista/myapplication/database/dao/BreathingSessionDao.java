@@ -22,21 +22,21 @@ public interface BreathingSessionDao {
     @Delete
     void delete(BreathingSessionEntity session);
     
-    @Query("SELECT * FROM breathing_sessions WHERE date = :date ORDER BY timestamp DESC")
-    List<BreathingSessionEntity> getSessionsForDate(String date);
+    @Query("SELECT * FROM breathing_sessions WHERE username = :username AND date = :date ORDER BY timestamp DESC")
+    List<BreathingSessionEntity> getSessionsForDate(String username, String date);
     
-    @Query("SELECT SUM(cycles) FROM breathing_sessions WHERE date = :date")
-    int getTotalCyclesForDate(String date);
+    @Query("SELECT SUM(cycles) FROM breathing_sessions WHERE username = :username AND date = :date")
+    int getTotalCyclesForDate(String username, String date);
     
-    @Query("SELECT SUM(duration_seconds) FROM breathing_sessions WHERE date = :date")
-    int getTotalDurationForDate(String date);
+    @Query("SELECT SUM(duration_seconds) FROM breathing_sessions WHERE username = :username AND date = :date")
+    int getTotalDurationForDate(String username, String date);
     
-    @Query("DELETE FROM breathing_sessions WHERE date = :date")
-    void deleteByDate(String date);
+    @Query("DELETE FROM breathing_sessions WHERE username = :username AND date = :date")
+    void deleteByDate(String username, String date);
     
-    @Query("DELETE FROM breathing_sessions WHERE date < :date")
-    void deleteOlderThan(String date);
+    @Query("DELETE FROM breathing_sessions WHERE username = :username AND date < :date")
+    void deleteOlderThan(String username, String date);
     
-    @Query("SELECT * FROM breathing_sessions ORDER BY timestamp DESC")
-    List<BreathingSessionEntity> getAllSessions();
+    @Query("SELECT * FROM breathing_sessions WHERE username = :username ORDER BY timestamp DESC")
+    List<BreathingSessionEntity> getAllSessions(String username);
 }

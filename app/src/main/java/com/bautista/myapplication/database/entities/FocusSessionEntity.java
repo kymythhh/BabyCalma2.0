@@ -10,6 +10,9 @@ public class FocusSessionEntity {
     @PrimaryKey(autoGenerate = true)
     public int id;
     
+    @ColumnInfo(name = "username")
+    public String username;
+    
     @ColumnInfo(name = "duration_minutes")
     public int durationMinutes;
     
@@ -22,7 +25,8 @@ public class FocusSessionEntity {
     @ColumnInfo(name = "completed")
     public boolean completed;
     
-    public FocusSessionEntity(int durationMinutes, String date, long timestamp, boolean completed) {
+    public FocusSessionEntity(String username, int durationMinutes, String date, long timestamp, boolean completed) {
+        this.username = username;
         this.durationMinutes = durationMinutes;
         this.date = date;
         this.timestamp = timestamp;

@@ -10,6 +10,9 @@ public class WaterIntakeEntity {
     @PrimaryKey(autoGenerate = true)
     public int id;
     
+    @ColumnInfo(name = "username")
+    public String username;
+    
     @ColumnInfo(name = "glass_count")
     public int glassCount;
     
@@ -19,7 +22,8 @@ public class WaterIntakeEntity {
     @ColumnInfo(name = "timestamp")
     public long timestamp;
     
-    public WaterIntakeEntity(int glassCount, String date, long timestamp) {
+    public WaterIntakeEntity(String username, int glassCount, String date, long timestamp) {
+        this.username = username;
         this.glassCount = glassCount;
         this.date = date;
         this.timestamp = timestamp;
