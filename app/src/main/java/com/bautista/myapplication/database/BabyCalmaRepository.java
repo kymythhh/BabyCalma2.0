@@ -1,14 +1,18 @@
 package com.bautista.myapplication.database;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
+import com.bautista.myapplication.database.entities.AffirmationEntity;
 import com.bautista.myapplication.database.entities.BreathingSessionEntity;
 import com.bautista.myapplication.database.entities.FocusSessionEntity;
 import com.bautista.myapplication.database.entities.LanternEntity;
 import com.bautista.myapplication.database.entities.UserProfileEntity;
 import com.bautista.myapplication.database.entities.WaterIntakeEntity;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -20,8 +24,10 @@ public class BabyCalmaRepository {
     
     private final BabyCalmaDatabase database;
     private final Executor executor;
+    private final Context context;
     
     public BabyCalmaRepository(Context context) {
+        this.context = context;
         this.database = BabyCalmaDatabase.getInstance(context);
         this.executor = Executors.newSingleThreadExecutor();
     }
@@ -240,6 +246,95 @@ public class BabyCalmaRepository {
                 try {
                     UserProfileEntity profile = database.userProfileDao().getUserProfile();
                     if (callback != null) callback.onDataLoaded(profile);
+                } catch (Exception e) {
+                    if (callback != null) callback.onError(e);
+                }
+            }
+        });
+    }
+    
+    // ==================== AFFIRMATIONS ====================
+    
+    private static final String PREFS_NAME = "AffirmationPrefs";
+    private static final String KEY_LAST_DATE = "last_affirmation_date";
+    private static final String KEY_CURRENT_INDEX = "current_affirmation_index";
+    
+    private static final String[] DEFAULT_AFFIRMATIONS = {
+        "Calmness and clarity guide today's actions.",
+        "Peace, happiness, and success are deserved.",
+        "Thoughts chosen today support growth and confidence.",
+        "Today's efforts build a better tomorrow.",
+        "Strength increases with every challenge faced.",
+        "Trust in good decisions comes naturally.",
+        "Stress is released and inner peace is welcomed.",
+        "Progress made so far is worthy of pride.",
+        "Mind and body work together in balance.",
+        "Positive energy flows into everyday life.",
+        "Love and respect are always deserved.",
+        "Any challenge today can be handled with confidence.",
+        "Focus, motivation, and productivity come easily.",
+        "Progress matters more than perfection.",
+        "Confidence is inhaled and doubt is exhaled.",
+        "Growth happens every single day.",
+        "Gratitude fills this day with opportunity.",
+        "Kindness and patience are given freely to the self.",
+        "Success is possible through steady effort.",
+        "Peace is chosen over worry today."
+    };
+    
+    public void initializeAffirmations(final DatabaseCallback callback) {
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    int count = database.affirmationDao().getAffirmationCount();
+                    if (count == 0) {
+                        List<AffirmationEntity> affirmations = new ArrayList<>();
+                        for (int i = 0; i < DEFAULT_AFFIRMATIONS.length; i++) {
+                            affirmations.add(new AffirmationEntity(DEFAULT_AFFIRMATIONS[i], i + 1));
+                        }
+                        database.affirmationDao().insertAll(affirmations);
+                    }
+                    if (callback != null) callback.onSuccess();
+                } catch (Exception e) {
+                    if (callback != null) callback.onError(e);
+                }
+            }
+        });
+    }
+    
+    public void getDailyAffirmation(final String currentDate, final DataCallback<String> callback) {
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+                    String lastDate = prefs.getString(KEY_LAST_DATE, "");
+                    int currentIndex = prefs.getInt(KEY_CURRENT_INDEX, -1);
+                    
+                    // Get all affirmations
+                    List<AffirmationEntity> allAffirmations = database.affirmationDao().getAllAffirmations();
+                    
+                    if (allAffirmations == null || allAffirmations.isEmpty()) {
+                        if (callback != null) callback.onDataLoaded("Take a deep breath and believe in yourself.");
+                        return;
+                    }
+                    
+                    // If it's a new day or first time, generate a new random index
+                    if (!currentDate.equals(lastDate) || currentIndex < 0) {
+                        Random random = new Random();
+                        currentIndex = random.nextInt(allAffirmations.size());
+                        
+                        // Save the new date and index
+                        prefs.edit()
+                            .putString(KEY_LAST_DATE, currentDate)
+                            .putInt(KEY_CURRENT_INDEX, currentIndex)
+                            .apply();
+                    }
+                    
+                    // Return the affirmation for today
+                    String affirmation = allAffirmations.get(currentIndex).affirmationText;
+                    if (callback != null) callback.onDataLoaded(affirmation);
                 } catch (Exception e) {
                     if (callback != null) callback.onError(e);
                 }

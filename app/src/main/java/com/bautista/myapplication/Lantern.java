@@ -144,8 +144,25 @@ public class Lantern extends AppCompatActivity {
             int h = lanternContainer != null ? lanternContainer.getHeight() : 1200;
             if (w <= 0) w = 800;
             if (h <= 0) h = 1200;
-            return new int[]{random.nextInt(Math.max(1, w - LANTERN_SIZE)), random.nextInt(Math.max(1, h - LANTERN_SIZE))};
-        } catch (Exception e) { return new int[]{100, 100}; }
+
+            // Conservative padding to ensure lanterns stay fully visible
+            // Account for padding in the container (8dp)
+            int safePadding = 20;
+            int availableWidth = w - LANTERN_SIZE - (safePadding * 2);
+            int availableHeight = h - LANTERN_SIZE - (safePadding * 2);
+
+            // Ensure we have positive values
+            availableWidth = Math.max(10, availableWidth);
+            availableHeight = Math.max(10, availableHeight);
+
+            int x = safePadding + random.nextInt(availableWidth);
+            int y = safePadding + random.nextInt(availableHeight);
+
+            return new int[]{x, y};
+        } catch (Exception e) {
+            Log.e("Lantern", "Position error: " + e.getMessage());
+            return new int[]{50, 50};
+        }
     }
 
     private void startFloatingAnimation(final View lanternView) {

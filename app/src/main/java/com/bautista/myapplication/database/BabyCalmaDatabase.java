@@ -6,12 +6,14 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
+import com.bautista.myapplication.database.dao.AffirmationDao;
 import com.bautista.myapplication.database.dao.BreathingSessionDao;
 import com.bautista.myapplication.database.dao.DailyStatsDao;
 import com.bautista.myapplication.database.dao.FocusSessionDao;
 import com.bautista.myapplication.database.dao.LanternDao;
 import com.bautista.myapplication.database.dao.UserProfileDao;
 import com.bautista.myapplication.database.dao.WaterIntakeDao;
+import com.bautista.myapplication.database.entities.AffirmationEntity;
 import com.bautista.myapplication.database.entities.BreathingSessionEntity;
 import com.bautista.myapplication.database.entities.DailyStatsEntity;
 import com.bautista.myapplication.database.entities.FocusSessionEntity;
@@ -26,9 +28,10 @@ import com.bautista.myapplication.database.entities.WaterIntakeEntity;
         FocusSessionEntity.class,
         LanternEntity.class,
         DailyStatsEntity.class,
-        UserProfileEntity.class
+        UserProfileEntity.class,
+        AffirmationEntity.class
     },
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 public abstract class BabyCalmaDatabase extends RoomDatabase {
@@ -42,6 +45,7 @@ public abstract class BabyCalmaDatabase extends RoomDatabase {
     public abstract LanternDao lanternDao();
     public abstract DailyStatsDao dailyStatsDao();
     public abstract UserProfileDao userProfileDao();
+    public abstract AffirmationDao affirmationDao();
     
     // Singleton pattern
     public static synchronized BabyCalmaDatabase getInstance(Context context) {

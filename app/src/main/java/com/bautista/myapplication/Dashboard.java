@@ -36,7 +36,7 @@ public class Dashboard extends AppCompatActivity {
 
     private TextView greetingText, tvDay, tvDateToday;
     private TextView tvSummaryWater, tvSummaryFocus, tvSummaryBreaths, tvSummaryRelease, tvWellnessScore;
-    private TextView releasedCountText, tvFirstLetter;
+    private TextView releasedCountText, tvFirstLetter, tvDailyAffirmation;
     private SwipeRefreshLayout swipeRefreshLayout;
 
     private final Handler timeHandler = new Handler();
@@ -79,6 +79,7 @@ public class Dashboard extends AppCompatActivity {
             tvSummaryBreaths = findViewById(R.id.tvSummaryBreaths);
             tvSummaryRelease = findViewById(R.id.tvSummaryRelease);
             tvWellnessScore = findViewById(R.id.tvWellnessScore);
+            tvDailyAffirmation = findViewById(R.id.tvDailyAffirmation);
 
             Intent intent = getIntent();
             String loggedInUser = intent.getStringExtra("username");
@@ -113,6 +114,18 @@ public class Dashboard extends AppCompatActivity {
 
             swipeRefreshLayout.setOnRefreshListener(this::checkDailyResetAndLoadData);
             checkDailyResetAndLoadData();
+            
+            // Initialize affirmations in database if not already done
+            repository.initializeAffirmations(new BabyCalmaRepository.DatabaseCallback() {
+                @Override
+                public void onSuccess() {
+                    loadDailyAffirmation();
+                }
+                @Override
+                public void onError(Exception e) {
+                    Log.e("Dashboard", "Error initializing affirmations: " + e.getMessage());
+                }
+            });
 
             btnLogout.setOnClickListener(v -> {
                 Intent logoutIntent = new Intent(Dashboard.this, MainActivity.class);
@@ -216,6 +229,7 @@ public class Dashboard extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         loadTodayData();
+        loadDailyAffirmation();
     }
 
     private void checkDailyResetAndLoadData() {
@@ -225,6 +239,7 @@ public class Dashboard extends AppCompatActivity {
                     runOnUiThread(() -> Toast.makeText(Dashboard.this, "Welcome to a new day! 🌅", Toast.LENGTH_LONG).show());
                 }
                 loadTodayData();
+                loadDailyAffirmation();
                 runOnUiThread(() -> { if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false); });
             });
         } catch (Exception e) {
@@ -284,6 +299,27 @@ public class Dashboard extends AppCompatActivity {
             });
         } catch (Exception e) {
             Log.e("Dashboard", "Load today data error: " + e.getMessage());
+        }
+    }
+    
+    private void loadDailyAffirmation() {
+        try {
+            repository.getDailyAffirmation(currentDate, new BabyCalmaRepository.DataCallback<String>() {
+                @Override
+                public void onDataLoaded(String affirmation) {
+                    runOnUiThread(() -> {
+                        if (tvDailyAffirmation != null) {
+                            tvDailyAffirmation.setText(affirmation);
+                        }
+                    });
+                }
+                @Override
+                public void onError(Exception e) {
+                    Log.e("Dashboard", "Load affirmation error: " + e.getMessage());
+                }
+            });
+        } catch (Exception e) {
+            Log.e("Dashboard", "Load affirmation error: " + e.getMessage());
         }
     }
 }
