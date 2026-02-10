@@ -18,6 +18,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.bautista.myapplication.database.BabyCalmaRepository;
+import com.bautista.myapplication.database.DailyResetManager;
+
 import java.util.Locale;
 import java.util.Random;
 
@@ -48,11 +52,27 @@ public class FocusTimer extends AppCompatActivity {
             "Mission accomplished! Your focus is inspiring."
     };
 
+    private BabyCalmaRepository repository;
+    private String currentDate;
+    private String loggedInUsername;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try {
             setContentView(R.layout.activity_focus_timer);
+
+            // Initialize repository
+            repository = new BabyCalmaRepository(this);
+            currentDate = DailyResetManager.getCurrentDate();
+
+            // Get username from intent
+            loggedInUsername = getIntent().getStringExtra("username");
+            if (loggedInUsername == null || loggedInUsername.isEmpty()) {
+                Toast.makeText(this, "Error: No user logged in", Toast.LENGTH_SHORT).show();
+                finish();
+                return;
+            }
 
             rootLayout = findViewById(R.id.mainLayout);
             controlsLayout = findViewById(R.id.controlsLayout);
@@ -174,6 +194,10 @@ public class FocusTimer extends AppCompatActivity {
                         manageMusic(false);
 
                         if (!isBreakMode) {
+                            // Save completed focus session to database
+                            int durationMinutes = (int) (totalDuration / 60000);
+                            saveFocusSession(durationMinutes, true);
+
                             showRandomMotivationalMessage();
                             showBreakOptionsDialog();
                         } else {
@@ -333,6 +357,28 @@ public class FocusTimer extends AppCompatActivity {
             builder.show();
         } catch (Exception e) {
             Log.e(TAG, "Error showing custom dialog: " + e.getMessage());
+        }
+    }
+
+    private void saveFocusSession(int durationMinutes, boolean completed) {
+        if (repository != null && loggedInUsername != null) {
+            repository.saveFocusSession(loggedInUsername, durationMinutes, currentDate, completed,
+                    new BabyCalmaRepository.DatabaseCallback() {
+                        @Override
+                        public void onSuccess() {
+                            Log.d(TAG, "Focus session saved: " + durationMinutes + " minutes");
+                            runOnUiThread(() -> {
+                                Toast.makeText(FocusTimer.this,
+                                        "✅ " + durationMinutes + " minutes logged!",
+                                        Toast.LENGTH_SHORT).show();
+                            });
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+                            Log.e(TAG, "Error saving focus session: " + e.getMessage());
+                        }
+                    });
         }
     }
 

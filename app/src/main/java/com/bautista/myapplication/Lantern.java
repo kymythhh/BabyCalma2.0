@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,8 +23,14 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bautista.myapplication.database.BabyCalmaRepository;
+import com.bautista.myapplication.database.DailyResetManager;
+import com.bautista.myapplication.database.entities.LanternEntity;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class Lantern extends AppCompatActivity {
@@ -40,20 +47,38 @@ public class Lantern extends AppCompatActivity {
     private Vibrator vibrator;
 
     private List<View> lanterns = new ArrayList<>();
+    private Map<View, Integer> lanternViewToIdMap = new HashMap<>();
     private int totalCreated = 0;
     private int totalReleased = 0;
     private static final int MAX_LANTERNS = 15;
     private static final int LANTERN_SIZE = 140; // dp - fixed size for all lanterns
     private Random random = new Random();
 
+    private BabyCalmaRepository repository;
+    private String currentDate;
+    private String loggedInUsername;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lantern);
 
+        // Initialize repository
+        repository = new BabyCalmaRepository(this);
+        currentDate = DailyResetManager.getCurrentDate();
+
+        // Get username from intent
+        loggedInUsername = getIntent().getStringExtra("username");
+        if (loggedInUsername == null || loggedInUsername.isEmpty()) {
+            Toast.makeText(this, "Error: No user logged in", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
         initializeViews();
         setupListeners();
-        updateStats();
+        loadStatsFromDatabase();
+        loadActiveLanterns();
     }
 
     private void initializeViews() {
@@ -155,6 +180,21 @@ public class Lantern extends AppCompatActivity {
 
         // Clear input
         stressorInput.setText("");
+
+        // Save to database
+        repository.saveLantern(loggedInUsername, text, currentDate, new BabyCalmaRepository.DataCallback<Long>() {
+            @Override
+            public void onDataLoaded(Long lanternId) {
+                // Store the database ID for later release
+                lanternViewToIdMap.put(lanternView, lanternId.intValue());
+                Log.d("Lantern", "Saved lantern with ID: " + lanternId);
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Log.e("Lantern", "Error saving lantern: " + e.getMessage());
+            }
+        });
 
         // Vibrate
         vibrateShort();
@@ -345,11 +385,37 @@ public class Lantern extends AppCompatActivity {
         animator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                // Remove from list and view
-                lanterns.remove(lanternView);
-                lanternContainer.removeView(lanternView);
-                totalReleased++;
-                updateStats();
+                // Get lantern ID from map
+                Integer lanternId = lanternViewToIdMap.get(lanternView);
+
+                if (lanternId != null) {
+                    // Mark as released in database
+                    repository.releaseLantern(lanternId, new BabyCalmaRepository.DatabaseCallback() {
+                        @Override
+                        public void onSuccess() {
+                            runOnUiThread(() -> {
+                                // Remove from list and view
+                                lanterns.remove(lanternView);
+                                lanternContainer.removeView(lanternView);
+                                lanternViewToIdMap.remove(lanternView);
+
+                                // Reload stats from database
+                                loadStatsFromDatabase();
+                            });
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+                            Log.e("Lantern", "Error releasing lantern: " + e.getMessage());
+                        }
+                    });
+                } else {
+                    // Fallback for lanterns without ID
+                    lanterns.remove(lanternView);
+                    lanternContainer.removeView(lanternView);
+                    totalReleased++;
+                    updateStats();
+                }
             }
         });
 
@@ -416,5 +482,86 @@ public class Lantern extends AppCompatActivity {
                 vibrator.vibrate(100);
             }
         }
+    }
+
+    private void loadStatsFromDatabase() {
+        repository.getLanternStats(loggedInUsername, currentDate, new BabyCalmaRepository.DataCallback<BabyCalmaRepository.LanternStats>() {
+            @Override
+            public void onDataLoaded(BabyCalmaRepository.LanternStats stats) {
+                runOnUiThread(() -> {
+                    if (stats != null) {
+                        totalCreated = stats.total;
+                        totalReleased = stats.released;
+                        totalCountText.setText(String.valueOf(totalCreated));
+                        activeCountText.setText(String.valueOf(stats.active));
+                        releasedCountText.setText(String.valueOf(totalReleased));
+
+                        // Toggle empty state
+                        if (emptyStateView != null) {
+                            emptyStateView.setVisibility(stats.active == 0 ? View.VISIBLE : View.GONE);
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Log.e("Lantern", "Error loading stats: " + e.getMessage());
+            }
+        });
+    }
+
+    private void loadActiveLanterns() {
+        repository.getActiveLanterns(loggedInUsername, currentDate, new BabyCalmaRepository.DataCallback<List<LanternEntity>>() {
+            @Override
+            public void onDataLoaded(List<LanternEntity> activeLanterns) {
+                runOnUiThread(() -> {
+                    for (LanternEntity entity : activeLanterns) {
+                        recreateLanternView(entity);
+                    }
+                });
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Log.e("Lantern", "Error loading active lanterns: " + e.getMessage());
+            }
+        });
+    }
+
+    private void recreateLanternView(LanternEntity entity) {
+        // Inflate lantern item
+        LayoutInflater inflater = LayoutInflater.from(this);
+        final View lanternView = inflater.inflate(R.layout.item_lantern, lanternContainer, false);
+
+        TextView lanternText = lanternView.findViewById(R.id.lanternText);
+        String truncatedText = entity.stressorText.length() > 30 ?
+                entity.stressorText.substring(0, 30) + "..." : entity.stressorText;
+        lanternText.setText(truncatedText);
+
+        // Get random position
+        int[] position = getRandomPosition();
+
+        // Set layout params with random position
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT
+        );
+        params.leftMargin = position[0];
+        params.topMargin = position[1];
+        lanternView.setLayoutParams(params);
+
+        // Add click listener to release
+        lanternView.setOnClickListener(v -> releaseLantern(lanternView));
+
+        // Add to container
+        lanternContainer.addView(lanternView);
+        lanterns.add(lanternView);
+
+        // Map view to database ID
+        lanternViewToIdMap.put(lanternView, entity.id);
+
+        // Start floating animation
+        startFloatingAnimation(lanternView);
     }
 }

@@ -152,8 +152,16 @@ public class Dashboard extends AppCompatActivity {
                 startBreathingLauncher.launch(i);
             });
 
-            stressReleaseCard.setOnClickListener(v -> startActivity(new Intent(Dashboard.this, Lantern.class)));
-            btnAddFocus.setOnClickListener(v -> startActivity(new Intent(Dashboard.this, FocusTimer.class)));
+            stressReleaseCard.setOnClickListener(v -> {
+                Intent lanternIntent = new Intent(Dashboard.this, Lantern.class);
+                lanternIntent.putExtra("username", loggedInUsername);
+                startActivity(lanternIntent);
+            });
+            btnAddFocus.setOnClickListener(v -> {
+                Intent focusIntent = new Intent(Dashboard.this, FocusTimer.class);
+                focusIntent.putExtra("username", loggedInUsername);
+                startActivity(focusIntent);
+            });
 
         } catch (Exception e) {
             Log.e("Dashboard", "Error in onCreate: " + e.getMessage());
