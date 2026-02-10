@@ -1,5 +1,6 @@
 package com.bautista.myapplication;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,7 +16,7 @@ public class Register extends AppCompatActivity {
 
     EditText etUsername, etPassword;
     CheckBox cbAgree;
-    Button btnSignUp;
+    Button btnSignUp, btnBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +28,7 @@ public class Register extends AppCompatActivity {
             etPassword = findViewById(R.id.etPassword);
             cbAgree = findViewById(R.id.cbAgree);
             btnSignUp = findViewById(R.id.btnSignUp);
+            btnBack = findViewById(R.id.btnBack);
 
             btnSignUp.setOnClickListener(v -> {
                 try {
@@ -81,6 +83,13 @@ public class Register extends AppCompatActivity {
                     Log.e("Register", "Error during sign up: " + e.getMessage());
                     Toast.makeText(this, "An unexpected error occurred", Toast.LENGTH_SHORT).show();
                 }
+            });
+
+            btnBack.setOnClickListener(v -> {
+                // Go back to the main activity
+                Intent intent = new Intent(Register.this, MainActivity.class);
+                startActivity(intent);
+                finish(); // Optional: finish this activity so the user can't navigate back to it
             });
         } catch (Exception e) {
             Log.e("Register", "Initialization error: " + e.getMessage());
