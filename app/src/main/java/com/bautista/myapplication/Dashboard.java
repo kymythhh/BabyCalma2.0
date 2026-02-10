@@ -223,8 +223,8 @@ public class Dashboard extends AppCompatActivity {
         public void run() {
             try {
                 Calendar calendar = Calendar.getInstance();
-                SimpleDateFormat dayFormat = new SimpleDateFormat("EEE", Locale.getDefault());
-                SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d", Locale.getDefault());
+                SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.getDefault());
+                SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM d, yyyy", Locale.getDefault());
                 if (tvDay != null) tvDay.setText(dayFormat.format(calendar.getTime()));
                 if (tvDateToday != null) tvDateToday.setText(dateFormat.format(calendar.getTime()));
 
