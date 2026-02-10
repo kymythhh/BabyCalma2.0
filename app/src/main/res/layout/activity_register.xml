@@ -65,28 +65,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="By creating an account and using Calma, you agree to the following Terms and Conditions in accordance with the Data Privacy Act of 2012 (Republic Act No. 10173) \n
-
 1. Acceptance of Terms
 By signing up, you confirm that you have read, understood, and agreed to these Terms and Conditions. \n
-
 2. Purpose of the App
 Calma is a wellness and focus support application designed for self-care support only. \n
-
 3. Data Collection and Use \n
 Calma collects only: \n
 - Username \n
 - Password \n
 Used only for app functionality. \n
-
 4. User Responsibility
 Users are responsible for keeping their credentials confidential. \n
-
 5. User Rights
 Users may request access, correction, or deletion of their data. \n
-
 6. Limitation of Liability
 Use of the app is at your own discretion. \n
-
 7. Consent
 By clicking Sign Up, you agree to these terms."
             android:textSize="12sp"
@@ -109,7 +102,18 @@ By clicking Sign Up, you agree to these terms."
             android:text="Sign Up"
             android:fontFamily="arial"
             android:textStyle="bold"
-            android:layout_marginTop="16dp"
+            android:backgroundTint="#bfdcff"
+            android:textColor="#fdfbd6"
+            android:layout_width="150dp"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/btnBack"
+            android:text="Back"
+            android:fontFamily="arial"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"
             android:backgroundTint="#bfdcff"
             android:textColor="#fdfbd6"
             android:layout_width="150dp"
