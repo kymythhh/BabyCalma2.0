@@ -455,12 +455,12 @@
                             app:cardBackgroundColor="#FF71A4"
                             app:cardElevation="2dp">
 
-                            <TextView
+                            <ImageView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:text="💖"
-                                android:textSize="28sp"
-                                android:gravity="center"/>
+                                android:src="@drawable/posoh"
+                                android:scaleType="centerCrop"
+                                android:contentDescription="Daily Affirmation Icon"/>
                         </androidx.cardview.widget.CardView>
 
                         <!-- Text Content -->
