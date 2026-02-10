@@ -22,22 +22,22 @@ import com.bautista.myapplication.database.entities.UserProfileEntity;
 import com.bautista.myapplication.database.entities.WaterIntakeEntity;
 
 @Database(
-    entities = {
-        WaterIntakeEntity.class,
-        BreathingSessionEntity.class,
-        FocusSessionEntity.class,
-        LanternEntity.class,
-        DailyStatsEntity.class,
-        UserProfileEntity.class,
-        AffirmationEntity.class
-    },
-    version = 2,
-    exportSchema = false
+        entities = {
+                WaterIntakeEntity.class,
+                BreathingSessionEntity.class,
+                FocusSessionEntity.class,
+                LanternEntity.class,
+                DailyStatsEntity.class,
+                UserProfileEntity.class,
+                AffirmationEntity.class
+        },
+        version = 2,
+        exportSchema = false
 )
 public abstract class BabyCalmaDatabase extends RoomDatabase {
-    
+
     private static BabyCalmaDatabase instance;
-    
+
     // Abstract methods to get DAOs
     public abstract WaterIntakeDao waterIntakeDao();
     public abstract BreathingSessionDao breathingSessionDao();
@@ -46,21 +46,21 @@ public abstract class BabyCalmaDatabase extends RoomDatabase {
     public abstract DailyStatsDao dailyStatsDao();
     public abstract UserProfileDao userProfileDao();
     public abstract AffirmationDao affirmationDao();
-    
+
     // Singleton pattern
     public static synchronized BabyCalmaDatabase getInstance(Context context) {
         if (instance == null) {
             instance = Room.databaseBuilder(
-                context.getApplicationContext(),
-                BabyCalmaDatabase.class,
-                "baby_calma_database"
-            )
-            .fallbackToDestructiveMigration()
-            .build();
+                            context.getApplicationContext(),
+                            BabyCalmaDatabase.class,
+                            "baby_calma_database"
+                    )
+                    .fallbackToDestructiveMigration()
+                    .build();
         }
         return instance;
     }
-    
+
     // Close database
     public static synchronized void closeDatabase() {
         if (instance != null && instance.isOpen()) {

@@ -114,12 +114,13 @@ public class Dashboard extends AppCompatActivity {
 
             swipeRefreshLayout.setOnRefreshListener(this::checkDailyResetAndLoadData);
             checkDailyResetAndLoadData();
-            
+
             // Initialize affirmations in database if not already done
+            // Force new affirmation on login
             repository.initializeAffirmations(new BabyCalmaRepository.DatabaseCallback() {
                 @Override
                 public void onSuccess() {
-                    loadDailyAffirmation();
+                    loadDailyAffirmation(true); // Force new on login
                 }
                 @Override
                 public void onError(Exception e) {
@@ -128,6 +129,9 @@ public class Dashboard extends AppCompatActivity {
             });
 
             btnLogout.setOnClickListener(v -> {
+                // Clear affirmation cache on logout to get new affirmation on next login
+                repository.clearAffirmationCache();
+
                 Intent logoutIntent = new Intent(Dashboard.this, MainActivity.class);
                 logoutIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(logoutIntent);
@@ -229,7 +233,8 @@ public class Dashboard extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         loadTodayData();
-        loadDailyAffirmation();
+        // Don't force refresh on resume to maintain same affirmation during day
+        loadDailyAffirmation(false);
     }
 
     private void checkDailyResetAndLoadData() {
@@ -239,7 +244,8 @@ public class Dashboard extends AppCompatActivity {
                     runOnUiThread(() -> Toast.makeText(Dashboard.this, "Welcome to a new day! 🌅", Toast.LENGTH_LONG).show());
                 }
                 loadTodayData();
-                loadDailyAffirmation();
+                // Force new affirmation on daily reset
+                loadDailyAffirmation(wasReset);
                 runOnUiThread(() -> { if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false); });
             });
         } catch (Exception e) {
@@ -301,10 +307,18 @@ public class Dashboard extends AppCompatActivity {
             Log.e("Dashboard", "Load today data error: " + e.getMessage());
         }
     }
-    
+
     private void loadDailyAffirmation() {
+        loadDailyAffirmation(false);
+    }
+
+    /**
+     * Load daily affirmation with option to force new random selection
+     * @param forceNew If true, always generate a new random affirmation
+     */
+    private void loadDailyAffirmation(boolean forceNew) {
         try {
-            repository.getDailyAffirmation(currentDate, new BabyCalmaRepository.DataCallback<String>() {
+            repository.getDailyAffirmation(currentDate, forceNew, new BabyCalmaRepository.DataCallback<String>() {
                 @Override
                 public void onDataLoaded(String affirmation) {
                     runOnUiThread(() -> {
