@@ -70,7 +70,9 @@ public class Breathing extends AppCompatActivity {
                         isRunning = false;
                         startBtn.setText("Start Breathing");
                         if (animatorSet != null) animatorSet.cancel();
+                        zoomImageView.setImageResource(R.drawable.inhale);
                         zoomImageView.animate().scaleX(1.0f).scaleY(1.0f).setDuration(300).start();
+                        phaseCount = 0;
                     }
                 } catch (Exception e) { Log.e("Breathing", "Start button error: " + e.getMessage()); }
             });
